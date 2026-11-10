@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="598" viewBox="0 0 520 598" role="img" aria-labelledby="title description">
+  <title id="title">L.O.R.E. verification flow</title>
+  <desc id="description">The tested control checks a hand-authored graph, builds structured fixture instructions, encodes fresh Wasm, and validates and tests the module to produce a binary and receipt. Dashed arrows represent proposed candidate generation and optional diagnostic feedback.</desc>
+  <defs>
+    <marker id="testedArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 8 4 0 8z" fill="#B8A6F4"/>
+    </marker>
+    <marker id="proposedArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 8 4 0 8z" fill="#E8BD9D"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="518" height="596" rx="22" fill="#171323" stroke="#675B7B"/>
+  <g font-family="system-ui, sans-serif">
+    <text x="26" y="35" fill="#F5F0FD" font-size="20" font-weight="700">Verification flow</text>
+    <path d="M27 56h23" stroke="#B8A6F4" stroke-width="2"/>
+    <text x="57" y="60" fill="#DFD5F4" font-size="14">Tested control</text>
+    <path d="M174 56h23" stroke="#E8BD9D" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="204" y="60" fill="#F7DDCB" font-size="14">Proposed</text>
+
+    <rect x="26" y="77" width="340" height="47" rx="8" fill="#2A2030" stroke="#E8BD9D" stroke-dasharray="5 4"/>
+    <text x="42" y="106" fill="#FFF1E7" font-size="19" font-weight="700">Intent → proposed model stages</text>
+    <path d="M54 124v38" stroke="#E8BD9D" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#proposedArrow)"/>
+    <text x="72" y="149" fill="#F7DDCB" font-size="16">Candidate graph</text>
+
+    <g fill="#28213B" stroke="#8877B3">
+      <rect x="26" y="164" width="340" height="52" rx="8"/>
+      <rect x="26" y="253" width="340" height="52" rx="8"/>
+      <rect x="26" y="342" width="340" height="52" rx="8"/>
+      <rect x="26" y="431" width="340" height="52" rx="8"/>
+      <rect x="26" y="520" width="340" height="52" rx="8"/>
+    </g>
+    <g fill="#F5F0FD" font-size="19" font-weight="700">
+      <text x="42" y="196">Check the typed graph</text>
+      <text x="42" y="285">Resolve structured instructions</text>
+      <text x="42" y="374">Encode fresh Wasm</text>
+      <text x="42" y="463">Validate and test in isolation</text>
+      <text x="42" y="552">Binary and execution receipt</text>
+    </g>
+    <g fill="none" stroke="#B8A6F4" stroke-width="2" marker-end="url(#testedArrow)">
+      <path d="M54 216v35"/>
+      <path d="M54 305v35"/>
+      <path d="M54 394v35"/>
+      <path d="M54 483v35"/>
+    </g>
+    <g fill="#DFD5F4" font-size="16">
+      <text x="72" y="239">Checked types and threshold</text>
+      <text x="72" y="328">Operations, operands, origin IDs</text>
+      <text x="72" y="417">Wasm bytes and origin map</text>
+      <text x="72" y="506">Observed results and checks</text>
+    </g>
+    <path d="M366 105h13q12 0 12 12v150q0 12-12 12h-11" fill="none" stroke="#E8BD9D" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#proposedArrow)"/>
+    <g fill="#F7DDCB" font-size="15">
+      <text x="404" y="173">Candidate</text>
+      <text x="404" y="193">instructions</text>
+    </g>
+    <path d="M366 453h123q12 0 12-12V100q0-12-12-12H368" fill="none" stroke="#E8BD9D" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#proposedArrow)"/>
+    <g fill="#F7DDCB" font-size="16">
+      <text x="404" y="346">Optional</text>
+      <text x="404" y="367">diagnostic</text>
+      <text x="404" y="388">feedback</text>
+    </g>
+  </g>
+</svg>

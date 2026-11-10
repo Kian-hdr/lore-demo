@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="104" height="26" viewBox="0 0 104 26" role="img" aria-labelledby="title">
+  <title id="title">CPU pilot</title>
+  <rect x=".5" y=".5" width="103" height="25" rx="7" fill="#EFE8F8" stroke="#AEA0C3"/>
+  <g fill="none" stroke="#62478C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="8" width="10" height="10" rx="2"/><path d="M13 6V8M17 6V8M13 18V20M17 18V20M8 11H10M8 15H10M20 11H22M20 15H22"/></g>
+  <text x="29" y="17" fill="#36254E" font-size="12" font-weight="600" font-family="system-ui, sans-serif">CPU pilot</text>
+</svg>

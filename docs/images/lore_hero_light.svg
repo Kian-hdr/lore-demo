@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="248" viewBox="0 0 760 248" role="img" aria-labelledby="title description">
+  <title id="title">From a typed graph to a checked artifact</title>
+  <desc id="description">A graph of connected nodes leads to a WebAssembly file with a verification receipt attached.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F3EEF8"/>
+      <stop offset="1" stop-color="#E6DDF4"/>
+    </linearGradient>
+    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#7F7097" opacity=".23"/>
+    </pattern>
+    <clipPath id="frame"><rect x="1" y="1" width="758" height="246" rx="16"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="760" height="248" fill="url(#panel)"/>
+    <rect x="24" y="18" width="712" height="170" rx="11" fill="url(#grid)"/>
+    <path d="M32 190H728" stroke="#ADA1C4" opacity=".6"/>
+    <path d="M33 42V27H48M712 27H727V42M33 167V182H48M712 182H727V167" fill="none" stroke="#ADA1C4" stroke-width="1.5"/>
+    <rect x="66" y="37" width="259" height="132" rx="16" fill="#E4D9F4" opacity=".75"/>
+    <rect x="436" y="37" width="259" height="132" rx="16" fill="#E4D9F4" opacity=".75"/>
+    <g fill="none" stroke="#654DA3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M121 103H137Q144 103 148 96L166 72Q170 66 177 66H192"/>
+      <path d="M121 103H137Q144 103 148 110L166 134Q170 140 177 140H192"/>
+      <path d="M221 66H240Q248 66 252 72L270 96Q274 103 282 103H288"/>
+      <path d="M221 140H240Q248 140 252 134L270 110Q274 103 282 103H288"/>
+      <path d="M345 103H414M402 92L414 103 402 114"/>
+    </g>
+    <g stroke="#654DA3" stroke-width="2">
+      <rect x="90" y="87" width="32" height="32" rx="6" fill="#493582"/>
+      <rect x="192" y="51" width="30" height="30" rx="6" fill="#FCFAFF"/>
+      <rect x="192" y="125" width="30" height="30" rx="6" fill="#FCFAFF"/>
+      <rect x="287" y="87" width="26" height="32" rx="6" fill="#EEE6F9"/>
+    </g>
+    <path d="M100 103H112M106 97V109" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    <path d="M201 66H213M201 140H213M296 103L299 106 305 99" fill="none" stroke="#654DA3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M487 44H556L578 66V153H487Z" fill="#FCFAFF" stroke="#654DA3" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M556 45V67H577" fill="#EEE6F9" stroke="#654DA3" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M501 91H530M501 105H547M501 119H529M501 133H540" stroke="#654DA3" stroke-width="3" stroke-linecap="round"/>
+    <path d="M549 99H658V154L650 148 642 154 634 148 626 154 618 148 610 154 602 148 594 154 586 148 578 154 570 148 562 154 549 148Z" fill="#EEE6F9" stroke="#654DA3" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M565 116H604M565 128H596" stroke="#4D3B68" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="631" cy="124" r="15" fill="#493582"/>
+    <path d="M624 124L629 129 637 120" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#282044" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="25" font-weight="600" letter-spacing="1">
+      <text x="195" y="224">TYPED GRAPH</text>
+      <text x="565" y="224">WASM + RECEIPT</text>
+    </g>
+  </g>
+  <rect x="1" y="1" width="758" height="246" rx="16" fill="none" stroke="#ADA1C4" stroke-width="1.5"/>
+</svg>

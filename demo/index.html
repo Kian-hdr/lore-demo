@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L.O.R.E. Demo | Count above 10</title>
+<style>
+  :root { color-scheme: light dark; font: 16px/1.55 system-ui, sans-serif; }
+  body { margin: 0; background: light-dark(#faf8ff, #191425); color: light-dark(#282038, #f6efff); }
+  main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem; }
+  h1 { font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.05; margin: .5rem 0 1rem; }
+  .label { font: 700 .85rem/1.4 ui-monospace, monospace; letter-spacing: .09em; color: light-dark(#503581, #c9b2fa); }
+  label { display: block; font-weight: 650; }
+  textarea { box-sizing: border-box; width: 100%; margin: .4rem 0 0; padding: .7rem; border: 1px solid light-dark(#8069a8, #aa96ca); border-radius: .5rem; font: 1rem/1.5 ui-monospace, monospace; }
+  small { display: block; margin: .25rem 0 1rem; }
+  button { font: inherit; padding: .5rem .9rem; border-radius: .5rem; cursor: pointer; margin: .25rem .3rem .25rem 0; border: 1px solid light-dark(#70509b, #bca4ee); }
+  button[type=submit] { color: #fff; background: #563588; font-weight: 650; }
+  output { display: block; min-height: 1.6em; margin: 1rem 0; padding: .85rem; border-left: 4px solid #9673c2; background: light-dark(#eee6f7, #292039); }
+  footer { margin-top: 2rem; }
+</style>
+<main>
+  <p class="label">L.O.R.E. DEMO</p>
+  <h1>Count above 10</h1>
+  <p>Run a prebuilt WebAssembly module from Kian Konrad Tajbakhsh’s research pilot. Enter signed integers and count the values strictly greater than 10.</p>
+  <form id="demo">
+    <label for="integers">Signed 32-bit integers</label>
+    <textarea id="integers" rows="3" maxlength="4096" aria-describedby="input-help">11, 11, 10, 11</textarea>
+    <small id="input-help">Separate up to 256 integers with commas or spaces. An empty list returns zero.</small>
+    <button type="submit">Run Wasm</button>
+    <button type="button" id="check">Check five examples</button>
+    <output id="result" for="integers" role="status">Ready.</output>
+  </form>
+  <footer><a href="../docs/Worked_Example.md">Worked example</a> · Research preview by Kian Konrad Tajbakhsh</footer>
+</main>
+<script>
+  const form = document.querySelector('#demo');
+  const input = document.querySelector('#integers');
+  const result = document.querySelector('#result');
+  const check = document.querySelector('#check');
+  const moduleBytes = 'AGFzbQEAAAABBgFgAX8BfwMCAQAFBAEBAQEHGAIGbWVtb3J5AgALY291bnRfZ3RfMTAAAAo4ATYBAn8gAEGAAksEQAALAkADQCABIABPDQEgAiABQQRsKAIAQQpKaiECIAFBAWohAQwACwsgAgs=';
+
+  async function loadModule() {
+    const bytes = Uint8Array.from(atob(moduleBytes), character => character.charCodeAt(0));
+    const { instance } = await WebAssembly.instantiate(bytes);
+    return instance.exports;
+  }
+
+  let exportsPromise;
+  async function count(values) {
+    exportsPromise ??= loadModule();
+    const { memory, count_gt_10 } = await exportsPromise;
+    const view = new DataView(memory.buffer);
+    values.forEach((value, index) => view.setInt32(index * 4, value, true));
+    return count_gt_10(values.length);
+  }
+
+  function parse(value) {
+    const trimmed = value.trim();
+    if (!trimmed) return [];
+    const tokens = trimmed.split(/[\s,]+/);
+    if (tokens.length > 256) throw new Error('Enter up to 256 integers.');
+    return tokens.map(token => {
+      const number = Number(token);
+      if (!/^[+-]?\d+$/.test(token) || number < -2147483648 || number > 2147483647) {
+        throw new Error('Enter whole numbers between −2,147,483,648 and 2,147,483,647.');
+      }
+      return number;
+    });
+  }
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      const values = parse(input.value);
+      result.textContent = `Count: ${await count(values)} of ${values.length} integers.`;
+    } catch (error) {
+      result.textContent = error.message;
+    }
+  });
+
+  check.addEventListener('click', async () => {
+    const examples = [
+      [[], 0],
+      [[10, 10], 0],
+      [[11, 11, 10, 11], 3],
+      [[-2147483648, -1, 9, 10, 11, 2147483647], 2],
+      [Array(256).fill(11), 256],
+    ];
+    try {
+      for (const [values, expected] of examples) {
+        if (await count(values) !== expected) throw new Error('An example returned an unexpected count.');
+      }
+      result.textContent = 'Passed all five examples.';
+    } catch (error) {
+      result.textContent = error.message;
+    }
+  });
+</script>
+</html>
