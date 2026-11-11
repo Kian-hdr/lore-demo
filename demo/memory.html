@@ -10,6 +10,8 @@
 body { margin:0; background:var(--bg); color:var(--ink); }
 main { width:min(72rem,100%); margin:auto; padding:2rem clamp(1rem,4vw,3rem) 4rem; }
 header { max-width:48rem; margin-bottom:2rem; }
+.brand-home { display:inline-block; max-width:100%; }
+.wordmark { display:block; width:12rem; max-width:100%; height:auto; }
 h1 { font-size:clamp(2rem,6vw,3.5rem); line-height:1.08; letter-spacing:-.025em; margin:.8rem 0 1rem; }
 h2 { font-size:1.25rem; margin:0 0 .8rem; }
 p { max-width:70ch; margin:.6rem 0 1rem; }
@@ -65,7 +67,10 @@ footer { margin-top:3rem; color:var(--muted); }
 <body>
 <main>
 <header>
-<a href="../README.md">L.O.R.E. research preview</a>
+<a class="brand-home" href="../README.md" aria-label="L.O.R.E. research preview"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/LORE_Logo_Dark.svg">
+    <img class="wordmark" src="assets/LORE_Logo.svg" width="552" height="154" alt="L.O.R.E.">
+  </picture></a>
 <h1>Ask at the right resolution.</h1>
 <p>A small memory engine answers from coarse codes when they are enough, opens exact records when needed, and keeps corrections and evidence inspectable.</p>
 <p class="muted">This deterministic CPU prototype uses synthetic records and a hand-authored codebook. Model training and learned resolution remain research work.</p>

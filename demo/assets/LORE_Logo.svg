@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="552" height="154" viewBox="0 0 552 154" role="img" aria-labelledby="title desc">
+  <title id="title">L.O.R.E. logo</title>
+  <desc id="desc">Three violet layers rise to the right beside the L.O.R.E. wordmark.</desc>
+  <g id="symbol" fill="#6540C4" transform="translate(7 22) scale(.68)">
+    <path id="upper-layer" d="M30 38H63L93 8L113 28L75 66H30Z"/>
+    <path id="middle-layer" d="M30 82H82L112 52L132 72L94 110H30Z"/>
+    <path id="lower-layer" d="M30 126H101L131 96L151 116L113 154H30Z"/>
+  </g>
+  <g id="wordmark" fill="#211B30">
+    <path id="letter-l" d="M145 46H161V94H202V108H145Z"/>
+    <path id="period-1" d="M213 97H224V108H213Z"/>
+    <path id="letter-o" fill-rule="evenodd" d="M249 46H292L304 58V96L292 108H249L237 96V58Z M258 60L253 65V89L258 94H283L288 89V65L283 60Z"/>
+    <path id="period-2" d="M315 97H326V108H315Z"/>
+    <path id="letter-r" fill-rule="evenodd" d="M339 46H394L405 57V76L394 87H391L408 108H389L372 87H355V108H339Z M355 60V73H385L389 69V64L385 60Z"/>
+    <path id="period-3" d="M419 97H430V108H419Z"/>
+    <path id="letter-e" d="M443 46H504V60H459V70H496V83H459V94H504V108H443Z"/>
+    <path id="period-4" d="M515 97H526V108H515Z"/>
+  </g>
+</svg>

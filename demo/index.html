@@ -8,7 +8,7 @@
   body { margin: 0; background: light-dark(#faf8ff, #191425); color: light-dark(#282038, #f6efff); }
   main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem; }
   h1 { font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.05; margin: .5rem 0 1rem; }
-  .label { font: 700 .85rem/1.4 ui-monospace, monospace; letter-spacing: .09em; color: light-dark(#503581, #c9b2fa); }
+  .wordmark { display:block; width:12rem; max-width:100%; height:auto; }
   label { display: block; font-weight: 650; }
   textarea { box-sizing: border-box; width: 100%; margin: .4rem 0 0; padding: .7rem; border: 1px solid light-dark(#8069a8, #aa96ca); border-radius: .5rem; font: 1rem/1.5 ui-monospace, monospace; }
   small { display: block; margin: .25rem 0 1rem; }
@@ -18,7 +18,10 @@
   footer { margin-top: 2rem; }
 </style>
 <main>
-  <p class="label">L.O.R.E. DEMO</p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/LORE_Logo_Dark.svg">
+    <img class="wordmark" src="assets/LORE_Logo.svg" width="552" height="154" alt="L.O.R.E.">
+  </picture>
   <h1>Count above 10</h1>
   <p>Run a prebuilt WebAssembly module from Kian Konrad Tajbakhsh’s research pilot. Enter signed integers and count the values strictly greater than 10.</p>
   <form id="demo">
