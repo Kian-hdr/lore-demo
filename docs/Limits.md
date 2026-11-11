@@ -1,17 +1,26 @@
-# Current limits
+# Current evidence and open questions
 
-| Area | Evidence and open questions |
+L.O.R.E. is at the control-pilot stage. The full concept includes intent inference, hierarchical graphs, learned instruction prediction, feedback, and larger executable tasks. Those capabilities need experiments.
+
+| Area | Evidence and remaining work |
 | --- | --- |
-| Program scope | One hand-authored integer kernel, one ABI, and five separately authored oracle cases. Behavior outside that scope remains unmeasured. |
-| Model generation | The proposed translation from intent to graph and learned instruction generation remain research design. |
-| Diagnostics | Two deliberate faults exercise distinct rejection stages. Recovery restored the known fixture in each case. |
-| Portability and isolation | The replay was checked on Apple Silicon macOS. The worker uses a fixed memory page, no guest imports, interpreter fuel, and an outer timeout. The controls check these boundaries for this harness. |
-| Performance | The samples measure stages of the fixed local control. Comparative latency, resource cost, and correctness on held-out program families remain to be measured. |
+| Program scope | One hand-authored signed-integer kernel, one ABI and five separately authored oracle cases |
+| Encoding | A fresh Wasm module was emitted from structured instructions and reproduced byte for byte |
+| Diagnostics | Two deliberate faults exercised instruction validation and a typed graph join; recovery restored the known fixture |
+| Model generation | Intent inference, graph generation and learned instructions remain proposed |
+| Repair | A useful automated repair policy and bounded machine-state feedback remain to be evaluated |
+| Scheduling | Serial, batched and distributed generation need matched comparisons |
+| Portability | Original isolated verification ran on Apple Silicon macOS; the prebuilt module also runs in the tested browser demo |
+| Performance | The original stage timings describe the fixed control on one host; comparative system performance remains unmeasured |
 
-## How to read the evidence
+## What the demonstration establishes
 
-Matching Wasm hashes establish byte-for-byte reproduction for the checked fixture. Matching result hashes establish agreement on the canonical records used in this run. The five oracle cases provide concrete behavioral checks. A broader claim would require more program families and a held-out oracle.
+Matching artifact hashes establish reproduction of the checked fixture. The five cases test empty input, equality, duplicates, signed extremes and the input bound. The original harness also exercised resource controls and expected rejection paths.
 
-The next scientific question is whether a system can generate a valid graph or instruction plan on a new task while preserving the same acceptance criteria. A fair comparison would hold the task, evaluator, and budgets constant and include failed runs in the analysis.
+The browser demo lets readers inspect the behavior of that prebuilt module. It does not exercise model inference or fresh instruction generation.
 
-[Concept](Concept.md) · [Worked example](Worked_Example.md) · [Try the demo](Try_It.md) · [Overview](../README.md)
+## What a larger claim would require
+
+Use unseen program families and independent held-out tests. Measure the complete workflow, including failed attempts. Compare matched tasks, targets, acceptance rules, retry limits and budgets. The proposed research sequence is described in the [research plan](Research_Plan.md).
+
+[Concept](Concept.md) · [Architecture](Architecture.md) · [Worked example](Worked_Example.md) · [Overview](../README.md)
