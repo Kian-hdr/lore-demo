@@ -1,10 +1,40 @@
+<div align="center">
+
 # L.O.R.E.
+
+**Research on typed program concepts, learned instructions, and verified executables.**
+
+[![Project: research](https://img.shields.io/badge/project-research-6f42c1?style=flat-square&labelColor=30303c)](docs/Research_Plan.md)
+[![Demo: offline WebAssembly](https://img.shields.io/badge/demo-offline_WebAssembly-6f42c1?style=flat-square&labelColor=30303c&logo=webassembly&logoColor=white)](docs/Try_It.md)
+[![Rights: reserved](https://img.shields.io/badge/rights-reserved-606070?style=flat-square&labelColor=30303c)](docs/Access.md)
+
+</div>
 
 L.O.R.E. is an independent research project by **Kian Konrad Tajbakhsh**. The goal is to turn a plain-English request into an executable by reasoning through a typed program graph, generating its instructions, and returning a binary with evidence from an independent test run.
 
-The research question is whether this approach can improve verified task completion, end-to-end latency, and compute efficiency compared with generating source code and compiling it. The current evidence is one small hand-authored control. The model-driven system described here is the proposed research direction.
+The research program investigates verified task completion, end-to-end latency, and compute per correct result. It connects a defined architecture, explicit evaluation criteria, and an executable control. The next experiments evaluate learned graph and instruction generation against matched baselines.
 
-[Project concept](docs/Concept.md) · [Architecture](docs/Architecture.md) · [Research plan](docs/Research_Plan.md) · [Try the pilot](docs/Try_It.md)
+[Subsystem guide](docs/Subsystems.md) · [Architecture](docs/Architecture.md) · [Research foundations](docs/Research_Foundations.md) · [Try the demo](docs/Try_It.md)
+
+## The building blocks
+
+**NCM**, short for **Next Concept Modeling**, is the project's working term for planning a program through typed operations and their relationships. It would turn the behavior contract into a graph that the rest of the system can check and execute.
+
+```mermaid
+flowchart TD
+    A["Behavior contract"] --> B["NCM<br/>Sketch and refine operations"]
+    B --> C["Typed concept graph"]
+    C --> D["Instruction head<br/>Choose opcodes and operands"]
+    D --> E["Encoder and independent verifier"]
+```
+
+| Subsystem | Responsibility | Visual explanation |
+| --- | --- | --- |
+| NCM | Compose and refine the program's concepts | [NCM](docs/Subsystems.md#1-ncm) |
+| Typed graph | Make values, relationships and constraints explicit | [Graph and joins](docs/Subsystems.md#2-the-typed-graph) |
+| Instruction head | Propose executable operations for the checked graph | [Instruction generation](docs/Subsystems.md#3-the-instruction-head) |
+| Encoder | Serialize instructions and preserve graph origins | [Binary encoding](docs/Subsystems.md#4-the-deterministic-encoder) |
+| Verifier | Compare execution with independent expectations | [Checks and receipts](docs/Subsystems.md#5-the-verifier-and-receipt) |
 
 ## The system we want to build
 
@@ -115,7 +145,7 @@ The graph gives the system explicit boundaries to check before execution. It als
 
 For larger tasks, the proposal is to freeze interfaces before refining independent branches. The project would compare serial refinement, batching branches on one model, and distributing branches across workers. Another experiment would test whether bounded feedback about stack, locals, memory, or failed properties improves instruction generation. These choices need measured comparisons. [Detailed architecture](docs/Architecture.md)
 
-## What we want to find out
+## Research questions
 
 - Does hierarchical concept generation improve verified success on unseen program families?
 - Can a learned instruction head generate valid, useful sequences from a checked graph?
@@ -123,9 +153,9 @@ For larger tasks, the proposal is to freeze interfaces before refining independe
 - When does parallel branch generation save elapsed time after join and repair costs?
 - Can the complete system improve time and compute per correct result against a source-generation baseline?
 
-The path starts with bounded integer programs, then grows toward runnable components and scoped application build, edit, and debugging tasks. Each expansion needs a defined interface and independent acceptance checks. [Experiments and decision gates](docs/Research_Plan.md)
+The program starts with bounded integer functions and grows toward executable components and scoped application build, edit, and debugging tasks. Every expansion has an interface, acceptance criteria, and a comparison designed to test its contribution. [Experiments and decision gates](docs/Research_Plan.md) · [Research foundations](docs/Research_Foundations.md)
 
-## What exists today
+## Executable evidence
 
 The CPU pilot produced and tested a 110-byte Wasm module that counts signed 32-bit integers strictly greater than 10. It passed five fixed cases and two deliberate rejection controls, and a clean rebuild reproduced its bytes.
 

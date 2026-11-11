@@ -1,0 +1,96 @@
+# Subsystems at a glance
+
+L.O.R.E. connects semantic planning, instruction generation, binary encoding and independent evaluation. The diagrams on this page describe the intended interfaces. The tested control supplies a concrete example at the same boundaries.
+
+[What is NCM?](#1-ncm) · [Typed graph](#2-the-typed-graph) · [Instruction head](#3-the-instruction-head) · [Encoder](#4-the-deterministic-encoder) · [Verifier](#5-the-verifier-and-receipt) · [Repair](#6-diagnostic-feedback)
+
+## 1. NCM
+
+**Next Concept Modeling** is the project's working term for a model that plans through typed program concepts. A concept identifies an operation and its arguments, relationships and constraints. NCM would sketch the program, refine its parts, and propose how those parts connect.
+
+```mermaid
+flowchart TD
+    A["Request and behavioral contract"] --> B["NCM sketches the operations"]
+    B --> C["Refine each operation"]
+    C --> D["Connect typed arguments and results"]
+    D --> E["Checked concept graph"]
+    C -->|More detail needed| C
+```
+
+For “count values above 10,” the concepts are a bounded input, a signed comparison and a count reduction. The working term names a proposed modeling approach. Evaluating a learned NCM is part of the research program.
+
+## 2. The typed graph
+
+A typed graph describes what values each operation accepts and produces. These explicit interfaces let a checker reject incompatible components before binary generation.
+
+```mermaid
+flowchart TD
+    A["Input values<br/>Bounded signed-integer sequence"] --> B["Read each value<br/>Output is i32"]
+    B --> C["Compare with 10<br/>Output is Bool"]
+    C --> D["Count true results<br/>Output is a bounded count"]
+    E["Identity operation<br/>Output is i32"] -. "Invalid input type for CountTrue" .-> D
+```
+
+The predicate and counter must agree on Bool. The input bound also constrains the count and loop. An integer-producing branch fails at this join even when that branch makes sense on its own. The pilot exercised this rejection.
+
+## 3. The instruction head
+
+The proposed instruction head translates a checked graph into a structured execution plan for a chosen target. It predicts opcodes and operands within the allowed instruction vocabulary.
+
+```mermaid
+flowchart TD
+    A["Checked graph and target ABI"] --> B["Instruction head proposes a sequence"]
+    B --> C["Structured records<br/>Opcode, operands and graph origin"]
+    C --> D["Check record and control-flow constraints"]
+    D --> E["Candidate instruction plan"]
+```
+
+In the count example, the sequence needs a load, signed comparison, running sum, index update and loop. The fixed pilot fixture makes those choices by hand. A learned head would have to generate valid sequences on new tasks and pass the same independent evaluation.
+
+## 4. The deterministic encoder
+
+The encoder turns accepted instruction records into the target's binary format. It resolves references and writes the module's required metadata. It also preserves the connection between instruction locations and graph origins.
+
+```mermaid
+flowchart TD
+    A["Structured instructions and origin IDs"] --> B["Resolve indices and control-flow structure"]
+    B --> C["Write binary instructions and module sections"]
+    C --> D["Fresh WebAssembly module"]
+    C --> E["Origin map<br/>Byte spans to graph operations"]
+```
+
+This boundary separates algorithm and instruction choices from byte serialization. The pilot emitted a fresh module directly from its fixture and reproduced it byte for byte.
+
+## 5. The verifier and receipt
+
+Verification asks whether the binary is admissible and whether its observed behavior matches the evaluation contract. The receipt connects those observations to an exact artifact.
+
+```mermaid
+flowchart TD
+    A["Candidate binary and interface contract"] --> B["Validate binary structure and ABI"]
+    B --> C["Run with isolation and resource bounds"]
+    C --> D["Compare outputs with independent expectations"]
+    D -->|Checks pass| E["Receipt with binary and test hashes"]
+    D -->|Check fails| F["Diagnostic and failure evidence"]
+    G["Separate evaluation oracle"] --> D
+```
+
+The original harness used Wasmi and an isolated worker. The browser demonstration runs the accepted prebuilt module with reader-supplied inputs. A passing test receipt applies to its recorded checks and environment. It is evidence of those observations, with coverage determined by the evaluation suite.
+
+## 6. Diagnostic feedback
+
+The origin map lets a failure point back to the decision that produced it. A future repair loop could update a contract, graph node, shared interface or instruction sequence within an explicit budget.
+
+```mermaid
+flowchart TD
+    A["Failed property or execution diagnostic"] --> B["Map failure to its graph origin"]
+    B --> C["Choose affected contract, graph or instructions"]
+    C --> D["Propose a bounded correction"]
+    D --> E["Recheck joins and rerun independent tests"]
+    E -->|Pass| F["New artifact and receipt"]
+    E -->|Budget exhausted| G["Failure receipt"]
+```
+
+The state-feedback experiment would compare a generator with and without compact execution-state observations. The pilot demonstrated diagnostic localization and manual restoration of known fixtures. Automatic repair remains an experiment.
+
+[System architecture](Architecture.md) · [Research plan](Research_Plan.md) · [Technical disclosure](Access.md) · [Overview](../README.md)

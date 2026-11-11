@@ -114,3 +114,5 @@ The original harness also checked an invalid local instruction and an incompatib
 [Project concept](Concept.md) · [Research plan](Research_Plan.md) · [Overview](../README.md)
 
 Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)
+
+[Visual subsystem guide](Subsystems.md) · [Research foundations](Research_Foundations.md)

@@ -52,3 +52,5 @@ Reconsider the design if the oracle is unreliable, graphs add more overhead than
 [Architecture](Architecture.md) · [Concept](Concept.md) · [Current limits](Limits.md) · [Overview](../README.md)
 
 Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)
+
+[Visual subsystem guide](Subsystems.md) · [Research foundations](Research_Foundations.md)
