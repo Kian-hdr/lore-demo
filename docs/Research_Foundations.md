@@ -1,10 +1,12 @@
 # Research foundations
 
-L.O.R.E. studies a path from English intent through a typed outline, refinement and interface checks, predicted instructions, deterministic Wasm encoding, and an execution receipt. These seven sources help explain the design choices. The connections to L.O.R.E. below are design inferences. Its completed pilot uses one hand-authored graph and instruction fixture.
+L.O.R.E. studies a path from English intent through a typed outline, refinement and interface checks, predicted instructions, deterministic Wasm encoding, and an execution receipt. These eight sources help explain the design choices. The connections to L.O.R.E. below are design inferences. Its completed pilot uses one hand-authored graph and instruction fixture.
 
 This is a focused comparison of selected precedents, checked in November 2026. It covers staged decoding, learned abstractions, compiler decisions, instruction search, and verification. A systematic novelty assessment and reproduction of these studies remain future work.
 
-## Seven relevant precedents
+## Eight relevant precedents
+
+**Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation — Kumbong and colleagues, 2026.** A learned multiscale discrete representation supports generation from coarse codes toward a detailed text reconstruction. The transformer predicts the codes within each level in parallel. L.O.R.E.'s proposed typed program graph is a different representation whose semantics and execution checks must be specified separately. The [concept hierarchy guide](Concept_Hierarchy.md) makes this distinction visual. [Author preprint](https://arxiv.org/abs/2610.14162)
 
 **Coarse-to-Fine Decoding for Neural Semantic Parsing — Dong and Lapata, ACL 2018.** The model first predicts a sketch with some details removed, then fills those details using both the input and sketch. This is a concrete precedent for generating an outline before its arguments. Its semantic-parsing tasks support investigating staged structure prediction. Whether a typed executable outline improves L.O.R.E.'s verified success or total latency needs a matched experiment. [Paper and metadata](https://aclanthology.org/P18-1068/)
 

@@ -6,18 +6,18 @@ L.O.R.E. connects semantic planning, instruction generation, binary encoding and
 
 ## 1. NCM
 
-**Next Concept Modeling** is the project's working term for a model that plans through typed program concepts. A concept identifies an operation and its arguments, relationships and constraints. NCM would sketch the program, refine its parts, and propose how those parts connect.
+**Next-Concept Modeling (NCM)** is a published coarse-to-fine text-generation method. Its learned code hierarchy is explained in the [concept pyramid](Concept_Hierarchy.md). L.O.R.E.'s proposed planner instead expresses program operations and their relationships as an explicit typed graph. The interface below shows that program-planning role.
 
 ```mermaid
 flowchart TD
-    A["Request and behavioral contract"] --> B["NCM sketches the operations"]
+    A["Request and behavioral contract"] --> B["Concept planner sketches the operations"]
     B --> C["Refine each operation"]
     C --> D["Connect typed arguments and results"]
     D --> E["Checked concept graph"]
     C -->|More detail needed| C
 ```
 
-For “count values above 10,” the concepts are a bounded input, a signed comparison and a count reduction. The working term names a proposed modeling approach. Evaluating a learned NCM is part of the research program.
+For “count values above 10,” the concepts are a bounded input, a signed comparison and a count reduction. Evaluating a learned concept planner is part of L.O.R.E.'s research program. The published NCM text generator and this proposed program planner require separate evaluations.
 
 ## 2. The typed graph
 

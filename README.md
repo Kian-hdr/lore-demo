@@ -18,11 +18,11 @@ The research program investigates verified task completion, end-to-end latency, 
 
 ## The building blocks
 
-**NCM**, short for **Next Concept Modeling**, is the project's working term for planning a program through typed operations and their relationships. It would turn the behavior contract into a graph that the rest of the system can check and execute.
+**Next-Concept Modeling (NCM)** is published research on generation through a learned hierarchy of discrete codes. L.O.R.E.'s proposed concept planner uses explicit typed program operations. The visual guide explains the relationship between these two hierarchies. [Concepts, codes and tokens](docs/Concept_Hierarchy.md)
 
 ```mermaid
 flowchart TD
-    A["Behavior contract"] --> B["NCM<br/>Sketch and refine operations"]
+    A["Behavior contract"] --> B["Concept planner<br/>Sketch and refine operations"]
     B --> C["Typed concept graph"]
     C --> D["Instruction head<br/>Choose opcodes and operands"]
     D --> E["Encoder and independent verifier"]
@@ -30,7 +30,7 @@ flowchart TD
 
 | Subsystem | Responsibility | Visual explanation |
 | --- | --- | --- |
-| NCM | Compose and refine the program's concepts | [NCM](docs/Subsystems.md#1-ncm) |
+| Concept planner | Compose and refine the program's concepts | [NCM and program concepts](docs/Subsystems.md#1-ncm) |
 | Typed graph | Make values, relationships and constraints explicit | [Graph and joins](docs/Subsystems.md#2-the-typed-graph) |
 | Instruction head | Propose executable operations for the checked graph | [Instruction generation](docs/Subsystems.md#3-the-instruction-head) |
 | Encoder | Serialize instructions and preserve graph origins | [Binary encoding](docs/Subsystems.md#4-the-deterministic-encoder) |
@@ -46,7 +46,7 @@ flowchart TD
     E --> C["Infer behavioral contract<br/>Inputs, outputs, rules and assumptions"]
     C -->|Material ambiguity| Q["Ask a focused question"]
     Q --> C
-    C -->|Contract sufficiently defined| N["NCM sketches the program<br/>Subsystems, interfaces and behaviors"]
+    C -->|Contract sufficiently defined| N["Concept planner sketches the program<br/>Subsystems, interfaces and behaviors"]
     N --> G["Refine and check the typed program graph"]
     G --> I["Instruction head predicts<br/>opcodes and operands"]
     I --> B["Deterministic encoder packages fresh Wasm"]
@@ -147,7 +147,7 @@ For larger tasks, the proposal is to freeze interfaces before refining independe
 
 ## Research foundations
 
-The design connects staged semantic decoding, learned program abstractions, constrained generation, compiler policies, and instruction-level search. The research review maps seven published systems and methods to specific L.O.R.E. decisions, including where their results may transfer and what still needs an experiment. [Read the source comparisons](docs/Research_Foundations.md)
+The design connects staged semantic decoding, learned program abstractions, constrained generation, compiler policies, and instruction-level search. The research review maps eight published systems and methods to specific L.O.R.E. decisions, including where their results may transfer and what still needs an experiment. [Read the source comparisons](docs/Research_Foundations.md)
 
 ## Research questions
 

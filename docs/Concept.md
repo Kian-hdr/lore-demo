@@ -2,7 +2,7 @@
 
 L.O.R.E. explores executable generation through explicit program structure. The intended interface is a plain-English request. The intended result is a runnable artifact plus a receipt identifying the contract, binary, environment, and checks that passed.
 
-The working modeling idea is **Next Concept Modeling**, or **NCM**. A concept is a typed operation with arguments, bounds, effects, and a defined role in the program. The model would sketch a coarse program, refine it into connected operations, and stop refinement when each part has a supported instruction-level meaning.
+The modeling idea is to plan through explicit program concepts. A concept is a typed operation with arguments, bounds, effects, and a defined role in the program. The planner would sketch a coarse program, refine it into connected operations, and stop refinement when each part has a supported instruction-level meaning. Published **Next-Concept Modeling** supplies a related coarse-to-fine research direction based on learned text codes. The [visual comparison](Concept_Hierarchy.md) distinguishes that representation from L.O.R.E.'s typed graphs.
 
 ## From intent to a program
 

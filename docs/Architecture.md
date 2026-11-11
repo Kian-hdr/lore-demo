@@ -10,7 +10,7 @@ flowchart TD
     E --> C["Infer behavioral contract<br/>Inputs, outputs, rules and assumptions"]
     C -->|Material ambiguity| Q["Ask a focused question"]
     Q --> C
-    C -->|Contract sufficiently defined| N["NCM sketches the program<br/>Subsystems, interfaces and behaviors"]
+    C -->|Contract sufficiently defined| N["Concept planner sketches the program<br/>Subsystems, interfaces and behaviors"]
     N --> G["Refine and check the typed program graph"]
     G --> I["Instruction head predicts<br/>opcodes and operands"]
     I --> B["Deterministic encoder packages fresh Wasm"]
