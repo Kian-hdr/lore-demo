@@ -22,7 +22,7 @@ function check(name, fn) {
 }
 const initial = M.create();
 
-check("broad query uses only coarse record",() => {
+check("broad answer context selects only the coarse record",() => {
   const result = M.query(initial,M.K.BROAD);
   assert.equal(result.status,1);
   assert.equal(result.level,2);
@@ -73,7 +73,7 @@ check("corrected exact answer changes, broad skips invalid summary",() => {
 
 check("dependent invalidation is transitive",() => {
   const store = clone(initial);
-  store.records.push({...clone(store.records[1]),id:20,depends:[2]});
+  store.records.push({...clone(store.records[1]),id:20,depends:[2],children:[2]});
   const result=M.correct(store,15);
   assert.equal(result.status,1);
   assert.deepEqual(plain(result.invalidated),[2,20]);
@@ -190,7 +190,7 @@ for (const [name,mutate] of [
   ["missing array",store=>delete store.records[0].supersedes],
   ["duplicate active fact",store=>store.records.push({...clone(store.records[0]),id:20})],
   ["dependency cycle",store=>{
-    store.records.push({...clone(store.records[1]),id:20,depends:[2]});
+    store.records.push({...clone(store.records[1]),id:20,depends:[2],children:[2]});
     store.records[1].depends=[20];
   }]
 ]) {
@@ -220,4 +220,24 @@ check("store capacity stops corrections before producing unrestorable data",() =
   assert.equal(store.records.length,M.LIMITS.records);
 });
 
+check("refinement children must match summary dependencies",() => {
+  const store = clone(initial);
+  store.records.find(record => record.id === 2).children = [3];
+  assert.equal(M.query(store,M.K.EXACT).status,0);
+  assert.equal(M.restore(JSON.stringify(store)).status,0);
+});
+check("conflicting active causal records are rejected",() => {
+  const store = clone(initial);
+  const causal = clone(store.records.find(record => record.kind === 3));
+  causal.id = 20;
+  causal.worlds[0][3] = 2;
+  store.records.push(causal);
+  assert.equal(M.query(store,M.K.INTERVENE).status,0);
+  assert.equal(M.restore(JSON.stringify(store)).status,0);
+});
+check("restore requires inspectable presentation labels",() => {
+  const store = clone(initial);
+  delete store.presentation;
+  assert.equal(M.restore(JSON.stringify(store)).status,0);
+});
 console.log(checks+" memory checks passed.");

@@ -81,9 +81,9 @@ footer { margin-top:3rem; color:var(--muted); }
 <option value="3">Observed switch on: is the lamp on?</option>
 <option value="4">Set the switch on: is the lamp on?</option>
 </select>
-<label for="read-budget">Read budget in code references</label>
+<label for="read-budget">Selected-context budget in code references</label>
 <select id="read-budget" aria-describedby="budget-help"><option value="3">3 references</option><option value="6" selected>6 references</option><option value="12">12 references</option></select>
-<small id="budget-help">Three references can answer the broad question. Exact refinement needs six, including its coarse candidate.</small>
+<small id="budget-help">Three references can answer the broad question. Exact refinement needs six. Validation and byte measurement still inspect the full store.</small>
 <button class="primary" type="submit">Ask memory</button>
 </form>
 <form id="correction-form" class="controls">
@@ -216,7 +216,9 @@ footer { margin-top:3rem; color:var(--muted); }
         if (new Set(links).size !== links.length || links.some(id => !ids.has(id) || id === record.id)) fail(E.RECORD);
       }
       if (record.kind === 2 && (!Array.isArray(record.children) || !record.children.length
-        || record.children.some(id => !ids.has(id) || id === record.id))) fail(E.RECORD);
+        || new Set(record.children).size !== record.children.length
+        || record.children.length !== record.depends.length
+        || record.children.some(id => !ids.has(id) || id === record.id || !record.depends.includes(id)))) fail(E.RECORD);
       if (record.invalidatedBy !== undefined && (!ids.has(record.invalidatedBy)
         || record.invalidatedBy === record.id || record.status !== 0)) fail(E.RECORD);
       if (record.kind === 1 && (record.literals?.threshold?.type !== C.I32
@@ -225,6 +227,10 @@ footer { margin-top:3rem; color:var(--muted); }
         || record.evidence.some(id => !evidence.has(id))) fail(E.EVIDENCE);
     }
     if (store.records.filter(record => record.kind === 1 && record.status === 1).length !== 1) fail(E.MISSING);
+    if (store.records.filter(record => record.kind === 3 && record.status === 1).length !== 1) fail(E.CAUSAL);
+    if (!store.presentation || !store.presentation.codes || !store.presentation.statuses
+      || [...known].some(code => typeof store.presentation.codes[code] !== "string")
+      || [0,1,2].some(status => typeof store.presentation.statuses[status] !== "string")) fail(E.STORE);
     const visited = new Set();
     const pending = new Set();
     function visit(id) {
