@@ -2,7 +2,7 @@
 
 # L.O.R.E.
 
-**Layered Operations, Reasoning, and Execution**
+<strong>L</strong>ayered <strong>O</strong>perations, <strong>R</strong>easoning, and <strong>E</strong>xecution
 
 [![Project: research](https://img.shields.io/badge/project-research-6f42c1?style=flat-square&labelColor=30303c)](docs/Research_Plan.md)
 [![Demo: offline WebAssembly](https://img.shields.io/badge/demo-offline_WebAssembly-6f42c1?style=flat-square&labelColor=30303c&logo=webassembly&logoColor=white)](docs/Try_It.md)
