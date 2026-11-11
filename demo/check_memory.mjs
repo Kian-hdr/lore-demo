@@ -166,7 +166,7 @@ check("signed i32 threshold extremes survive serialization",() => {
   }
 });
 
-check("read budget permits coarse and abstains before exact expansion",() => {
+check("selection budget permits coarse and abstains before exact expansion",() => {
   const broad=M.query(initial,M.K.BROAD,3);
   assert.equal(broad.status,1);
   assert.equal(broad.metrics.selectedCodeReferences,3);
@@ -238,6 +238,14 @@ check("conflicting active causal records are rejected",() => {
 check("restore requires inspectable presentation labels",() => {
   const store = clone(initial);
   delete store.presentation;
+  assert.equal(M.restore(JSON.stringify(store)).status,0);
+});
+check("count summaries cannot refine into causal records",() => {
+  const store = clone(initial);
+  const coarse = store.records.find(record => record.id === 2);
+  coarse.children = [3];
+  coarse.depends = [3];
+  assert.equal(M.query(store,M.K.EXACT).status,0);
   assert.equal(M.restore(JSON.stringify(store)).status,0);
 });
 console.log(checks+" memory checks passed.");

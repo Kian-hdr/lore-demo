@@ -216,13 +216,16 @@ footer { margin-top:3rem; color:var(--muted); }
         if (new Set(links).size !== links.length || links.some(id => !ids.has(id) || id === record.id)) fail(E.RECORD);
       }
       if (record.kind === 2 && (!Array.isArray(record.children) || !record.children.length
+        || JSON.stringify(record.codes) !== JSON.stringify([C.COUNT,C.I32,C.CATEGORY])
         || new Set(record.children).size !== record.children.length
         || record.children.length !== record.depends.length
-        || record.children.some(id => !ids.has(id) || id === record.id || !record.depends.includes(id)))) fail(E.RECORD);
+        || record.children.some(id => !ids.has(id) || id === record.id || !record.depends.includes(id)
+          || ![1,2].includes(store.records.find(child => child.id === id).kind)))) fail(E.RECORD);
       if (record.invalidatedBy !== undefined && (!ids.has(record.invalidatedBy)
         || record.invalidatedBy === record.id || record.status !== 0)) fail(E.RECORD);
       if (record.kind === 1 && (record.literals?.threshold?.type !== C.I32
-        || !i32(record.literals.threshold.value))) fail(E.LITERAL);
+        || !i32(record.literals.threshold.value)
+        || JSON.stringify(record.codes) !== JSON.stringify([C.COUNT,C.GT,C.I32]))) fail(E.LITERAL);
       if (!Array.isArray(record.evidence) || !record.evidence.length
         || record.evidence.some(id => !evidence.has(id))) fail(E.EVIDENCE);
     }
