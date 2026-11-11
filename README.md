@@ -145,6 +145,10 @@ The graph gives the system explicit boundaries to check before execution. It als
 
 For larger tasks, the proposal is to freeze interfaces before refining independent branches. The project would compare serial refinement, batching branches on one model, and distributing branches across workers. Another experiment would test whether bounded feedback about stack, locals, memory, or failed properties improves instruction generation. These choices need measured comparisons. [Detailed architecture](docs/Architecture.md)
 
+## Research foundations
+
+The design connects staged semantic decoding, learned program abstractions, constrained generation, compiler policies, and instruction-level search. The research review maps seven published systems and methods to specific L.O.R.E. decisions, including where their results may transfer and what still needs an experiment. [Read the source comparisons](docs/Research_Foundations.md)
+
 ## Research questions
 
 - Does hierarchical concept generation improve verified success on unseen program families?
