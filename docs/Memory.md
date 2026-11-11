@@ -61,23 +61,22 @@ The learned research target would feed code embeddings directly to a memory-cond
 
 ```mermaid
 block-beta
-    columns 20
-    coarse["COARSE<br/>Summary"]:3 summary["Record 2 · 135 B<br/>101 Count · 103 i32<br/>104 Control category"]:6 space:1 empty["Empty<br/>No lamp summary stored"]:9 space:1
-    gap1[" "]:20
-    fine["FINE<br/>Exact detail"]:3 count["Record 1 · 168 B<br/>101 Count · 103 i32<br/>102 Strict greater than<br/>Threshold 10"]:7 space:1 lamp["Record 3 · 209 B<br/>401 Power · 402 Switch<br/>403 Lamp · 301 Identity<br/>302 AND"]:9
-    gap2[" "]:20
-    evidence["EVIDENCE<br/>Source"]:3 countsource["Evidence 1001 · 169 B<br/>Count rule source"]:7 space:1 lampsource["Evidence 1002 · 152 B<br/>Lamp fixture source"]:6 space:3
-    style coarse fill:none,stroke:none,font-weight:bold;
-    style fine fill:none,stroke:none,font-weight:bold;
-    style evidence fill:none,stroke:none,font-weight:bold;
+    columns 18
+    coarse["COARSE · summaries"]:18
+    space:3 summary["Record 2 · 135 B<br/>101 Count · 103 i32<br/>104 Control category"]:6 space:1 empty["Empty<br/>No lamp summary stored"]:5 space:3
+    fine["FINE · exact facts and mechanisms"]:18
+    count["Record 1 · 168 B<br/>101 Count · 103 i32<br/>102 Strict greater than<br/>Threshold 10"]:8 space:1 lamp["Record 3 · 209 B<br/>401 Power · 402 Switch<br/>403 Lamp · 301 Identity<br/>302 AND"]:9
+    evidence["EVIDENCE · retained sources"]:18
+    space:1 countsource["Evidence 1001 · 169 B<br/>Count rule source"]:8 space:1 lampsource["Evidence 1002 · 152 B<br/>Lamp fixture source"]:7 space:1
+    style coarse fill:#30303c,stroke:#777786,color:#ffffff,font-size:20px;
+    style fine fill:#30303c,stroke:#777786,color:#ffffff,font-size:20px;
+    style evidence fill:#30303c,stroke:#777786,color:#ffffff,font-size:20px;
     style summary fill:#35244f,stroke:#aa91d2,color:#ffffff;
     style empty fill:#24212e,stroke:#aa91d2,color:#e3d8f2,stroke-dasharray:5 4;
     style count fill:#194e48,stroke:#6ea59d,color:#ffffff;
     style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff;
     style countsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
     style lampsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    style gap1 fill:none,stroke:none,opacity:0;
-    style gap2 fill:none,stroke:none,opacity:0;
 ```
 
 The top row holds coarse summaries, the middle holds exact details, and the bottom holds evidence. The dashed slot shows that the lamp fixture has no stored summary. Its exact mechanism and source are present below. Filled cards pair code IDs with their meanings and show exact byte counts.
