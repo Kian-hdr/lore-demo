@@ -226,25 +226,38 @@ flowchart TD
 
 ```mermaid
 block-beta
-    columns 18
-    coarse["COARSE · summaries"]:18
-    space:3 summary["Record 2 · 135 B<br/>101 Count · 103 i32<br/>104 Control category"]:6 space:1 empty["Empty<br/>No lamp summary stored"]:5 space:3
-    fine["FINE · exact facts and mechanisms"]:18
-    count["Record 1 · 168 B<br/>101 Count · 103 i32<br/>102 Strict greater than<br/>Threshold 10"]:8 space:1 lamp["Record 3 · 209 B<br/>401 Power · 402 Switch<br/>403 Lamp · 301 Identity<br/>302 AND"]:9
-    evidence["EVIDENCE · retained sources"]:18
-    space:1 countsource["Evidence 1001 · 169 B<br/>Count rule source"]:8 space:1 lampsource["Evidence 1002 · 152 B<br/>Lamp fixture source"]:7 space:1
-    style coarse fill:#30303c,stroke:#777786,color:#ffffff,font-size:20px;
-    style fine fill:#30303c,stroke:#777786,color:#ffffff,font-size:20px;
-    style evidence fill:#30303c,stroke:#777786,color:#ffffff,font-size:20px;
-    style summary fill:#35244f,stroke:#aa91d2,color:#ffffff;
-    style empty fill:#24212e,stroke:#aa91d2,color:#e3d8f2,stroke-dasharray:5 4;
-    style count fill:#194e48,stroke:#6ea59d,color:#ffffff;
-    style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff;
-    style countsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    style lampsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    columns 16
+    coarse["COARSE · summaries"]:16
+    space:3 summary["2<br/>Summary"]:5 empty["—<br/>Lamp summary"]:5 space:3
+    fine["FINE · records and details"]:16
+    count["1<br/>Count rule"]:4 threshold["10<br/>Threshold"]:4 lamp["3<br/>Lamp mechanism"]:4 worlds["2<br/>Worlds"]:4
+    codes["CODES · 8 references"]:16
+    c1["101"]:2 c2["102"]:2 c3["103"]:2 c4["401"]:2 c5["402"]:2 c6["403"]:2 c7["301"]:2 c8["302"]:2
+    evidence["EVIDENCE · retained sources"]:16
+    space:4 countsource["1001"]:4 lampsource["1002"]:4 space:4
+    style coarse fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style fine fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style codes fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style evidence fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style summary fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:28px;
+    style empty fill:#24212e,stroke:#aa91d2,color:#e3d8f2,font-size:28px,stroke-dasharray:5 4;
+    style count fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style threshold fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style worlds fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style c1 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c2 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c3 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c4 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c5 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c6 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c7 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style c8 fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style countsource fill:#234b38,stroke:#7ba98c,color:#ffffff,font-size:22px;
+    style lampsource fill:#234b38,stroke:#7ba98c,color:#ffffff,font-size:22px;
 ```
 
-The top row holds coarse summaries, the middle holds exact details, and the bottom holds evidence. The dashed slot shows that the lamp fixture has no stored summary. Its exact mechanism and source are present below. Filled cards pair code IDs with their meanings and show exact byte counts.
+Purple shows the stored summary and the empty lamp-summary slot. Teal shows records 1 and 3 alongside the threshold value and the number of worlds in the lamp fixture. The amber tiles are the eight code references in those records. Green shows the two evidence IDs. Tile widths follow the layers.
 
 The initial synthetic store totals **1,365 bytes**, including 532 bytes for the shared codebook, labels, metadata, and JSON framing.
 
