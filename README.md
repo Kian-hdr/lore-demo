@@ -1,12 +1,12 @@
 <div align="center">
 
 <a name="lore"></a>
-<h1>
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="demo/assets/LORE_Logo_Dark.svg">
     <img src="demo/assets/LORE_Logo.svg" width="280" alt="L.O.R.E.">
   </picture>
-</h1>
+</p>
 
 <strong>L</strong>ayered <strong>O</strong>perations, <strong>R</strong>easoning, and <strong>E</strong>xecution
 
@@ -16,7 +16,7 @@
 
 </div>
 
-L.O.R.E. studies how to compose programs from typed operations, use memory at the right level of detail, and test the resulting executables. It is an independent research project by **Kian Konrad Tajbakhsh**. The proposed architecture turns a plain-English request into a typed program graph, generates instructions, and returns a binary with evidence from an independent test run.
+L.O.R.E. studies how to compose programs from typed operations, use memory at the right level of detail, and test the resulting executables. It is an independent research project by **Kian Konrad**. The proposed architecture turns a plain-English request into a typed program graph, generates instructions, and returns a binary with evidence from an independent test run.
 
 The research program investigates verified task completion, end-to-end latency, and compute per correct result. It connects a defined architecture, explicit evaluation criteria, and an executable control. The next experiments evaluate learned graph and instruction generation against matched baselines.
 
@@ -324,4 +324,4 @@ For deeper technical review or an access request, [contact Kian through a GitHub
 
 ## Ownership
 
-L.O.R.E. is owned by Kian Konrad Tajbakhsh. Copyright © 2026 Kian Konrad Tajbakhsh. All rights reserved. This repository is a research preview for feedback. The core implementation is proprietary.
+L.O.R.E. is owned by Kian Konrad. Copyright © 2026 Kian Konrad. All rights reserved. This repository is a research preview for feedback. The core implementation is proprietary.
