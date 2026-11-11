@@ -62,9 +62,9 @@ The learned research target would feed code embeddings directly to a memory-cond
 ```mermaid
 block-beta
     columns 20
-    coarse["COARSE<br/>Summary"]:3 summary["Record 2 · 135 B<br/>101 Count · 103 signed i32<br/>104 Control category"]:6 space:1 empty["Empty<br/>No lamp summary stored"]:9 space:1
+    coarse["COARSE<br/>Summary"]:3 summary["Record 2 · 135 B<br/>101 Count · 103 i32<br/>104 Control category"]:6 space:1 empty["Empty<br/>No lamp summary stored"]:9 space:1
     gap1[" "]:20
-    fine["FINE<br/>Exact detail"]:3 count["Record 1 · 168 B<br/>101 Count · 103 signed i32<br/>102 Greater than · threshold 10"]:7 space:1 lamp["Record 3 · 209 B<br/>401 Power · 402 Switch · 403 Lamp<br/>301 Identity · 302 AND"]:9
+    fine["FINE<br/>Exact detail"]:3 count["Record 1 · 168 B<br/>101 Count · 103 i32<br/>102 Strict greater than<br/>Threshold 10"]:7 space:1 lamp["Record 3 · 209 B<br/>401 Power · 402 Switch<br/>403 Lamp · 301 Identity<br/>302 AND"]:9
     gap2[" "]:20
     evidence["EVIDENCE<br/>Source"]:3 countsource["Evidence 1001 · 169 B<br/>Count rule source"]:7 space:1 lampsource["Evidence 1002 · 152 B<br/>Lamp fixture source"]:6 space:3
     style coarse fill:none,stroke:none,font-weight:bold;
