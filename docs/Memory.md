@@ -61,28 +61,24 @@ The learned research target would feed code embeddings directly to a memory-cond
 
 ```mermaid
 block-beta
-    columns 14
-    store["MEMORY STORE · 1,365 bytes"]:14
-    coarse["COARSE · reusable summary"]:14
-    space:4 summary["Record 2 · 135 B<br/>Count summary<br/>101 · 103 · 104"]:5 space:5
-    fine["FINE · exact facts and mechanisms"]:14
-    count["Record 1 · 168 B<br/>Threshold 10<br/>101 · 102 · 103"]:6 lamp["Record 3 · 209 B<br/>Lamp mechanism<br/>401 · 402 · 403 · 301 · 302"]:8
-    evidence["EVIDENCE · retained source records"]:14
-    countsource["1001 · 169 B<br/>Count rule source"]:6 lampsource["1002 · 152 B<br/>Lamp fixture source"]:6 space:2
-    overhead["Shared codebook, labels, metadata and JSON framing · 532 B"]:14
-    style store fill:#30303c,stroke:#777786,color:#ffffff;
-    style coarse fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    columns 18
+    space:6 summary["Coarse summary<br/>Record 2 · 135 B<br/>101 · 103 · 104"]:6 space:6
+    gap1[" "]:18
+    space:1 count["Exact threshold 10<br/>Record 1 · 168 B<br/>101 · 102 · 103"]:7 space:1 lamp["Lamp mechanism<br/>Record 3 · 209 B<br/>401 · 402 · 403 · 301 · 302"]:9
+    gap2[" "]:18
+    space:1 countsource["Count rule source<br/>Evidence 1001 · 169 B"]:7 space:2 lampsource["Lamp fixture source<br/>Evidence 1002 · 152 B"]:6 space:2
     style summary fill:#35244f,stroke:#aa91d2,color:#ffffff;
-    style fine fill:#194e48,stroke:#6ea59d,color:#ffffff;
     style count fill:#194e48,stroke:#6ea59d,color:#ffffff;
     style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff;
-    style evidence fill:#234b38,stroke:#7ba98c,color:#ffffff;
     style countsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
     style lampsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    style overhead fill:#30303c,stroke:#777786,color:#ffffff;
+    style gap1 fill:none,stroke:none,opacity:0;
+    style gap2 fill:none,stroke:none,opacity:0;
 ```
 
-This is the demo's initial synthetic store. Card widths approximate serialized record sizes, and the labels give exact UTF-8 byte counts. Purple shows the summary, teal shows exact detail, and green shows evidence. The count summary links to the exact count rule and its source. The lamp mechanism has its own fine record and evidence.
+Read from top to bottom. Purple shows the coarse summary, teal shows exact facts and mechanisms, and green shows retained evidence. Card widths approximate each record's size, with exact byte counts on the cards.
+
+The initial synthetic store totals **1,365 bytes**, including 532 bytes for the shared codebook, labels, metadata, and JSON framing.
 
 For the count rule, code 101 means Count, 102 means strict greater-than, 103 means signed i32, and 104 identifies the summary category. The literal threshold is 10. Evidence IDs identify source records, and the code IDs inside the cards identify meanings in the codebook.
 
