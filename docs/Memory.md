@@ -57,6 +57,35 @@ The learned research target would feed code embeddings directly to a memory-cond
 | Reasoning | Deterministic operations over numeric records | Reasoner using code embeddings directly |
 | Explanation | Human-readable labels and traces | Optional decoder outside the required reasoning path |
 
+## What one memory store looks like
+
+```mermaid
+block-beta
+    columns 14
+    store["MEMORY STORE · 1,365 bytes"]:14
+    coarse["COARSE · reusable summary"]:14
+    space:4 summary["Record 2 · 135 B<br/>Count summary<br/>101 · 103 · 104"]:5 space:5
+    fine["FINE · exact facts and mechanisms"]:14
+    count["Record 1 · 168 B<br/>Threshold 10<br/>101 · 102 · 103"]:6 lamp["Record 3 · 209 B<br/>Lamp mechanism<br/>401 · 402 · 403 · 301 · 302"]:8
+    evidence["EVIDENCE · retained source records"]:14
+    countsource["1001 · 169 B<br/>Count rule source"]:6 lampsource["1002 · 152 B<br/>Lamp fixture source"]:6 space:2
+    overhead["Shared codebook, labels, metadata and JSON framing · 532 B"]:14
+    style store fill:#30303c,stroke:#777786,color:#ffffff;
+    style coarse fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    style summary fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    style fine fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    style count fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    style evidence fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    style countsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    style lampsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    style overhead fill:#30303c,stroke:#777786,color:#ffffff;
+```
+
+This is the demo's initial synthetic store. Card widths approximate serialized record sizes, and the labels give exact UTF-8 byte counts. Purple shows the summary, teal shows exact detail, and green shows evidence. The count summary links to the exact count rule and its source. The lamp mechanism has its own fine record and evidence.
+
+For the count rule, code 101 means Count, 102 means strict greater-than, 103 means signed i32, and 104 identifies the summary category. The literal threshold is 10. Evidence IDs identify source records, and the code IDs inside the cards identify meanings in the codebook.
+
 ## A memory knowledge graph
 
 A summary can reference a fact, which references its evidence. A correction adds a new fact and links it to the old one so dependent summaries can be invalidated.
