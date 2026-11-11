@@ -1,6 +1,12 @@
 <div align="center">
 
-# L.O.R.E.
+<a name="lore"></a>
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="demo/assets/LORE_Logo_Dark.svg">
+    <img src="demo/assets/LORE_Logo.svg" width="280" alt="L.O.R.E.">
+  </picture>
+</h1>
 
 <strong>L</strong>ayered <strong>O</strong>perations, <strong>R</strong>easoning, and <strong>E</strong>xecution
 
