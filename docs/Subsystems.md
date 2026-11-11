@@ -15,6 +15,10 @@ flowchart TD
     C --> D["Connect typed arguments and results"]
     D --> E["Checked concept graph"]
     C -->|More detail needed| C
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class A,B,C,E plan;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class D check;
 ```
 
 For “count values above 10,” the concepts are a bounded input, a signed comparison and a count reduction. Evaluating a learned concept planner is part of L.O.R.E.'s research program. The published NCM text generator and this proposed program planner require separate evaluations.
@@ -29,6 +33,8 @@ flowchart TD
     B --> C["Compare with 10<br/>Output is Bool"]
     C --> D["Count true results<br/>Output is a bounded count"]
     E["Identity operation<br/>Output is i32"] -. "Invalid input type for CountTrue" .-> D
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class D check;
 ```
 
 The predicate and counter must agree on Bool. The input bound also constrains the count and loop. An integer-producing branch fails at this join even when that branch makes sense on its own. The pilot exercised this rejection.
@@ -43,6 +49,12 @@ flowchart TD
     B --> C["Structured records<br/>Opcode, operands and graph origin"]
     C --> D["Check record and control-flow constraints"]
     D --> E["Candidate instruction plan"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class A plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class B,E exec;
+    classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    class C,D data;
 ```
 
 In the count example, the sequence needs a load, signed comparison, running sum, index update and loop. The fixed pilot fixture makes those choices by hand. A learned head would have to generate valid sequences on new tasks and pass the same independent evaluation.
@@ -57,6 +69,10 @@ flowchart TD
     B --> C["Write binary instructions and module sections"]
     C --> D["Fresh WebAssembly module"]
     C --> E["Origin map<br/>Byte spans to graph operations"]
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class A,C,D exec;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class E plan;
 ```
 
 This boundary separates algorithm and instruction choices from byte serialization. The pilot emitted a fresh module directly from its fixture and reproduced it byte for byte.
@@ -73,6 +89,12 @@ flowchart TD
     D -->|Checks pass| E["Receipt with binary and test hashes"]
     D -->|Check fails| F["Diagnostic and failure evidence"]
     G["Separate evaluation oracle"] --> D
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class A,B,E exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class C,D check;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class F change;
 ```
 
 The original harness used Wasmi and an isolated worker. The browser demonstration runs the accepted prebuilt module with reader-supplied inputs. A passing test receipt applies to its recorded checks and environment. It is evidence of those observations, with coverage determined by the evaluation suite.
@@ -89,8 +111,18 @@ flowchart TD
     D --> E["Recheck joins and rerun independent tests"]
     E -->|Pass| F["New artifact and receipt"]
     E -->|Budget exhausted| G["Failure receipt"]
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A,B,D,G change;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class C exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class E,F check;
 ```
 
 The state-feedback experiment would compare a generator with and without compact execution-state observations. The pilot demonstrated diagnostic localization and manual restoration of known fixtures. Automatic repair remains an experiment.
 
 [System architecture](Architecture.md) · [Research plan](Research_Plan.md) · [Technical disclosure](Access.md) · [Overview](../README.md)
+
+## 7. Hierarchical memory
+
+A memory controller selects coarse or fine codes for the question, preserves exact values and follows evidence links. The demonstration uses deterministic numeric operations. The learned research target would reason directly over code embeddings. [Visual memory design](Memory.md) · [Run the memory demo](../demo/memory.html)

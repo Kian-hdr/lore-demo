@@ -6,35 +6,29 @@ A hierarchy can represent the same output at several levels of detail. The upper
 
 Published **Next-Concept Modeling**, or **NCM**, learns a multiscale discrete representation of text. Its generator predicts one level at a time, with the positions at each level predicted in parallel. A decoder reconstructs text from the accumulated representation. [Kumbong and colleagues, 2026](https://arxiv.org/abs/2610.14162) · [Author repository](https://github.com/HazyResearch/ncm)
 
-The diagram below is an original schematic. A–N are illustrative code labels, and the 2/4/8 row sizes are chosen for explanation.
+The diagram below is an original schematic. Each tile contains an illustrative numeric code ID. The rows contain 2, 4 and 8 codes. These IDs are examples, not values copied from a trained model.
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 10, "rankSpacing": 30, "padding": 8}}}%%
-flowchart TB
-    subgraph COARSE["COARSE · broad structure"]
-        direction LR
-        A["A"] ~~~ B["B"]
-    end
-    subgraph MIDDLE["REFINEMENT · more detail"]
-        direction LR
-        C["C"] ~~~ D["D"] ~~~ E["E"] ~~~ F["F"]
-    end
-    subgraph FINE["FINE · dense detail"]
-        direction LR
-        G["G"] ~~~ H["H"] ~~~ I["I"] ~~~ J["J"] ~~~ K["K"] ~~~ L["L"] ~~~ M["M"] ~~~ N["N"]
-    end
-    COARSE -->|"Condition the next level"| MIDDLE
-    MIDDLE -->|"Add finer information"| FINE
-    FINE --> DECODER["Decoder reconstructs text tokens"]
-    classDef coarse fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:26px;
-    classDef middle fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:20px;
-    classDef fine fill:#62422d,stroke:#c39770,color:#ffffff,font-size:14px;
-    class A,B coarse;
-    class C,D,E,F middle;
-    class G,H,I,J,K,L,M,N fine;
+block-beta
+    columns 8
+    coarse["COARSE · 2 code IDs"]:8
+    space:2 a["204"]:2 b["718"]:2 space:2
+    middle["REFINEMENT · 4 code IDs"]:8
+    c["41"]:2 d["93"]:2 e["206"]:2 f["517"]:2
+    fine["FINE · 8 code IDs"]:8
+    g["8"] h["26"] i["74"] j["105"] k["186"] l["329"] m["488"] n["652"]
+    decoder["Accumulate the levels, then decode text tokens"]:8
+    classDef heading fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    classDef broad fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:30px;
+    classDef refine fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    classDef detail fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    class coarse,middle,fine,decoder heading;
+    class a,b broad;
+    class c,d,e,f refine;
+    class g,h,i,j,k,l,m,n detail;
 ```
 
-Read from top to bottom. Fewer coarse codes summarize structure across the sequence. Finer levels supply residual detail, and the completed representation is decoded into tokens. The arrows connect representation levels. They are not a claim that each code owns exactly two children.
+Read from top to bottom. Fewer coarse codes summarize structure across the sequence. Finer levels supply residual detail, and the completed representation is decoded into tokens. Rows represent refinement levels. An ID names a codebook entry. The number printed in a tile is not a token count or an abstraction score.
 
 ## What “more context per token” means here
 
@@ -65,6 +59,12 @@ flowchart TD
     E --> I["Wasm signed comparison"]
     F --> J["Wasm integer addition"]
     G --> K["Wasm control-flow instructions"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class A,B,C plan;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class F check;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class H,I,J,K exec;
 ```
 
 The top specifies the task. The middle makes operations and interfaces explicit. The bottom supplies target execution detail. In the pilot, the graph and instructions were hand-authored. Evaluating learned versions is part of the research plan.

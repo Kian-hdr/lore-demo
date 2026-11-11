@@ -14,6 +14,14 @@ flowchart TD
     E --> F
     F --> G["Compare repair, machine-state feedback and execution profiles"]
     G --> H["Expand to scoped component and application tasks"]
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class A,E exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class B check;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class D plan;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class G change;
 ```
 
 The first control has reproduced locally. The data, model and application stages are proposed research.
@@ -54,3 +62,9 @@ Reconsider the design if the oracle is unreliable, graphs add more overhead than
 Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)
 
 [Visual subsystem guide](Subsystems.md) · [Research foundations](Research_Foundations.md)
+
+## Memory and learning experiments
+
+Compare flat retrieval, hierarchical retrieval and selected numeric records on the same synthetic facts and questions. Evaluate exact values, contradictions, correction propagation and abstention. The learned path would then compare codebook/reasoner/controller choices while holding the evidence and task budget fixed.
+
+Report total persisted storage separately from active model positions, selected references and inference work. Evaluate memory updates separately from weight updates. Use known synthetic mechanisms before interpreting observational records as causal evidence. [Memory architecture and demonstration](Memory.md)

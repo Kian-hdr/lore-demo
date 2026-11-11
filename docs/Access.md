@@ -7,6 +7,7 @@ L.O.R.E. is owned by Kian Konrad Tajbakhsh. The architecture, diagrams, research
 | Overall concept, stage interfaces and diagrams | Included for architecture review |
 | Research objectives and evaluation approach | Included for discussion |
 | Small prebuilt pilot and browser demo | Included for experimentation |
+| Deterministic memory fixture and inspection demo | Included for experimentation |
 | Advanced model configurations and training recipes | Confidential, internal research only |
 | Weights, checkpoints and detailed datasets | Reserved for internal research |
 | Core source and production implementation details | Proprietary and internal only |

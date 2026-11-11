@@ -24,3 +24,7 @@ The browser demo lets readers inspect the behavior of that prebuilt module. It d
 Use unseen program families and independent held-out tests. Measure the complete workflow, including failed attempts. Compare matched tasks, targets, acceptance rules, retry limits and budgets. The proposed research sequence is described in the [research plan](Research_Plan.md).
 
 [Concept](Concept.md) · [Architecture](Architecture.md) · [Worked example](Worked_Example.md) · [Overview](../README.md)
+
+## Memory demonstration
+
+The memory control uses a hand-authored numeric codebook and resolution rules over synthetic records. It demonstrates selection, exact facts, correction propagation and explicit intervention semantics. Learned embeddings, learned resolution, continual weight updates, compression gains and real-world causal competence remain research questions. [Memory details](Memory.md)

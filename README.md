@@ -21,32 +21,26 @@ The research program investigates verified task completion, end-to-end latency, 
 **Next-Concept Modeling (NCM)** is published research on generation through a learned hierarchy of discrete codes. L.O.R.E.'s proposed concept planner uses explicit typed program operations. The visual guide explains the relationship between these two hierarchies. [Concepts, codes and tokens](docs/Concept_Hierarchy.md)
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 10, "rankSpacing": 30, "padding": 8}}}%%
-flowchart TB
-    subgraph COARSE["COARSE · broad structure"]
-        direction LR
-        A["A"] ~~~ B["B"]
-    end
-    subgraph MIDDLE["REFINEMENT · more detail"]
-        direction LR
-        C["C"] ~~~ D["D"] ~~~ E["E"] ~~~ F["F"]
-    end
-    subgraph FINE["FINE · dense detail"]
-        direction LR
-        G["G"] ~~~ H["H"] ~~~ I["I"] ~~~ J["J"] ~~~ K["K"] ~~~ L["L"] ~~~ M["M"] ~~~ N["N"]
-    end
-    COARSE -->|"Condition the next level"| MIDDLE
-    MIDDLE -->|"Add finer information"| FINE
-    FINE --> DECODER["Decoder reconstructs text tokens"]
-    classDef coarse fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:26px;
-    classDef middle fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:20px;
-    classDef fine fill:#62422d,stroke:#c39770,color:#ffffff,font-size:14px;
-    class A,B coarse;
-    class C,D,E,F middle;
-    class G,H,I,J,K,L,M,N fine;
+block-beta
+    columns 8
+    coarse["COARSE · 2 code IDs"]:8
+    space:2 a["204"]:2 b["718"]:2 space:2
+    middle["REFINEMENT · 4 code IDs"]:8
+    c["41"]:2 d["93"]:2 e["206"]:2 f["517"]:2
+    fine["FINE · 8 code IDs"]:8
+    g["8"] h["26"] i["74"] j["105"] k["186"] l["329"] m["488"] n["652"]
+    decoder["Accumulate the levels, then decode text tokens"]:8
+    classDef heading fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    classDef broad fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:30px;
+    classDef refine fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    classDef detail fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    class coarse,middle,fine,decoder heading;
+    class a,b broad;
+    class c,d,e,f refine;
+    class g,h,i,j,k,l,m,n detail;
 ```
 
-The pyramid illustrates the published coarse-to-fine representation with symbolic code labels. L.O.R.E.'s program-planning proposal uses typed operations at its corresponding interfaces. [Read the visual comparison](docs/Concept_Hierarchy.md)
+The pyramid illustrates the published coarse-to-fine representation with illustrative numeric code IDs. L.O.R.E.'s program-planning proposal uses typed operations at its corresponding interfaces. [Read the visual comparison](docs/Concept_Hierarchy.md)
 
 | Subsystem | Responsibility | Visual explanation |
 | --- | --- | --- |
@@ -57,6 +51,9 @@ The pyramid illustrates the published coarse-to-fine representation with symboli
 | Verifier | Compare execution with independent expectations | [Checks and receipts](docs/Subsystems.md#5-the-verifier-and-receipt) |
 
 ## The system we want to build
+
+For system-flow diagrams, purple marks planning and concepts, teal marks memory/data, amber marks execution detail, green marks checks/results, and rose marks corrections/failures. Node labels and arrow text carry the meaning alongside color.
+
 
 ### 1. English to a tested executable
 
@@ -76,6 +73,12 @@ flowchart TD
     D -. "Affected contract or graph" .-> C
     D -. "Affected instruction sequence" .-> I
     D -->|Budget exhausted| X["Failure receipt"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class P,C,Q,N,G plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class E,I,B,V,R exec;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class D,X change;
 ```
 
 This diagram shows the proposed end-to-end system. The pilot has exercised encoding, verification, and diagnostic controls with a hand-authored graph and instruction fixture.
@@ -102,6 +105,12 @@ flowchart TD
     DI --> J
     J --> T["Run a seeded replay<br/>Check timings, hits and final score"]
     T --> R["Runnable wave and receipt"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class A,O,S,P,C,D plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class SI,PI,CI,DI exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class J,T,R check;
 ```
 
 This future example shows how separate components would meet at checked interfaces before a seeded integration replay.
@@ -123,6 +132,12 @@ flowchart TD
     H --> I["Rerun failing case and final independent checks"]
     I -->|Pass| J["New binary and receipt"]
     I -->|Budget exhausted| K["Failure receipt with evidence"]
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A,E,F,G,H,I,K change;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class D plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class J exec;
 ```
 
 Failures would be localized before regenerating affected parts. Every proposed repair still has to pass independent checks within its budget.
@@ -139,6 +154,14 @@ flowchart TD
     E --> F
     F --> G["Compare repair, machine-state feedback and execution profiles"]
     G --> H["Expand to scoped component and application tasks"]
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class A,E exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class B check;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class D plan;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class G change;
 ```
 
 The hand-authored control has reproduced locally. The learned stages and broader applications are research objectives.
@@ -155,6 +178,10 @@ flowchart TD
     D --> F
     E --> F
     F --> G["Run integration checks and return the artifact"]
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class A,F,G check;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class C,D plan;
 ```
 
 The project would compare these scheduling choices at matched correctness and resource budgets.
@@ -164,6 +191,39 @@ The project would compare these scheduling choices at matched correctness and re
 The graph gives the system explicit boundaries to check before execution. It also creates a place to localize a failure, regenerate the affected component, and check whether independently generated branches fit together.
 
 For larger tasks, the proposal is to freeze interfaces before refining independent branches. The project would compare serial refinement, batching branches on one model, and distributing branches across workers. Another experiment would test whether bounded feedback about stack, locals, memory, or failed properties improves instruction generation. These choices need measured comparisons. [Detailed architecture](docs/Architecture.md)
+
+## Memory across levels of detail
+
+L.O.R.E.'s memory direction combines reusable numeric codes, exact values, and recoverable evidence. A controller would choose the resolution needed by the current task. The learned target is reasoning over code embeddings, with text decoding available for inspection.
+
+```mermaid
+flowchart TD
+    A["Write episodes, facts and corrections"] --> B["Versioned coarse and fine memory"]
+    B --> C["Select resolution for the query"]
+    C --> D["Reason over selected codes and exact values"]
+    D --> E["Answer with evidence"]
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A change;
+    classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    class B,D,E data;
+```
+
+A correction keeps its evidence and invalidates summaries derived from an older fact.
+
+```mermaid
+flowchart TD
+    S["Record 2<br/>Derived coarse summary"] -->|depends on| F["Record 1<br/>Original exact threshold"]
+    F -->|supported by| E["Evidence 1001"]
+    C["Record 4<br/>Corrected exact threshold"] -->|supersedes| F
+    C -->|invalidates| S
+    C -->|supported by| N["Evidence 1003"]
+    classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    class S,F,E,N data;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class C change;
+```
+
+The [offline memory demonstration](demo/memory.html) uses a hand-authored codebook and deterministic rules. It lets you inspect coarse selection, exact-value expansion, correction invalidation, and observation versus intervention in a synthetic causal example. [Memory design and measurements](docs/Memory.md)
 
 ## Research foundations
 

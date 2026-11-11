@@ -12,6 +12,7 @@ flowchart TD
     Q --> C
     C -->|Contract sufficiently defined| N["Concept planner sketches the program<br/>Subsystems, interfaces and behaviors"]
     N --> G["Refine and check the typed program graph"]
+    M["Hierarchical memory<br/>Selected codes and exact values"] --> G
     G --> I["Instruction head predicts<br/>opcodes and operands"]
     I --> B["Deterministic encoder packages fresh Wasm"]
     B --> V["Validate module and execute independent checks"]
@@ -20,6 +21,14 @@ flowchart TD
     D -. "Affected contract or graph" .-> C
     D -. "Affected instruction sequence" .-> I
     D -->|Budget exhausted| X["Failure receipt"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class P,C,Q,N,G plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class E,I,B,V,R exec;
+    classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    class M data;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class D,X change;
 ```
 
 The intent and concept stages decide the program's meaning and structure. The instruction stage proposes how to execute it on the chosen target. Whether these stages share one transformer or use separate models is an experimental choice.
@@ -54,6 +63,12 @@ flowchart TD
     DI --> J
     J --> T["Run a seeded replay<br/>Check timings, hits and final score"]
     T --> R["Runnable wave and receipt"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class A,O,S,P,C,D plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class SI,PI,CI,DI exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class J,T,R check;
 ```
 
 The wave is an illustrative future workload. Branches inherit the root contract and keep their agreed interfaces while they refine their internals. The join checks types, effects, shared-state assumptions, and update order. Work is eligible for parallel execution only when its dependencies permit it.
@@ -75,6 +90,12 @@ flowchart TD
     H --> I["Rerun failing case and final independent checks"]
     I -->|Pass| J["New binary and receipt"]
     I -->|Budget exhausted| K["Failure receipt with evidence"]
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A,E,F,G,H,I,K change;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class D plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class J exec;
 ```
 
 The optional instruction-level experiment would feed bounded summaries of stack, locals, memory, control flow, or a failed property back to the generator. The behavioral contract remains fixed during that experiment. Compare the generator with and without this feedback using matched latency or compute budgets.
@@ -93,6 +114,10 @@ flowchart TD
     D --> F
     E --> F
     F --> G["Run integration checks and return the artifact"]
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class A,F,G check;
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class C,D plan;
 ```
 
 Measure critical-path rounds, join failures, repair costs, total compute, and wall time. Distribution is a candidate execution profile, whose overhead and consistency costs need evaluation.
@@ -107,6 +132,12 @@ flowchart TD
     D --> E["Wasmi validation and bounded execution"]
     E --> F["Supervisor compares five expected results"]
     F --> G["Artifact and execution receipt"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class A plan;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class B,F,G check;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class C,D,E exec;
 ```
 
 The original harness also checked an invalid local instruction and an incompatible graph join. The browser demo runs the prebuilt accepted module with new input values. [Worked example](Worked_Example.md) · [Try it](Try_It.md) · [Evidence limits](Limits.md)
@@ -116,3 +147,5 @@ The original harness also checked an invalid local instruction and an incompatib
 Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)
 
 [Visual subsystem guide](Subsystems.md) · [Research foundations](Research_Foundations.md)
+
+The proposed memory path supplies task-relevant codes, exact fields and evidence to the planner. Its learned reasoner and resolution policy are research targets. [Memory architecture and runnable control](Memory.md)
