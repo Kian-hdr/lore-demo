@@ -2,7 +2,7 @@
 
 # L.O.R.E.
 
-**Research on typed program concepts, learned instructions, and verified executables.**
+**Layered Operations, Reasoning, and Execution**
 
 [![Project: research](https://img.shields.io/badge/project-research-6f42c1?style=flat-square&labelColor=30303c)](docs/Research_Plan.md)
 [![Demo: offline WebAssembly](https://img.shields.io/badge/demo-offline_WebAssembly-6f42c1?style=flat-square&labelColor=30303c&logo=webassembly&logoColor=white)](docs/Try_It.md)
@@ -10,7 +10,7 @@
 
 </div>
 
-L.O.R.E. is an independent research project by **Kian Konrad Tajbakhsh**. The goal is to turn a plain-English request into an executable by reasoning through a typed program graph, generating its instructions, and returning a binary with evidence from an independent test run.
+L.O.R.E. studies how to compose programs from typed operations, use memory at the right level of detail, and test the resulting executables. It is an independent research project by **Kian Konrad Tajbakhsh**. The proposed architecture turns a plain-English request into a typed program graph, generates instructions, and returns a binary with evidence from an independent test run.
 
 The research program investigates verified task completion, end-to-end latency, and compute per correct result. It connects a defined architecture, explicit evaluation criteria, and an executable control. The next experiments evaluate learned graph and instruction generation against matched baselines.
 
