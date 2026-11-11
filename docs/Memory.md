@@ -61,21 +61,25 @@ The learned research target would feed code embeddings directly to a memory-cond
 
 ```mermaid
 block-beta
-    columns 16
-    coarse["COARSE · summaries"]:16
-    space:3 summary["2<br/>Summary"]:5 empty["—<br/>Lamp summary"]:5 space:3
-    fine["FINE · records and details"]:16
-    count["1<br/>Count rule"]:4 threshold["10<br/>Threshold"]:4 lamp["3<br/>Lamp mechanism"]:4 worlds["2<br/>Worlds"]:4
-    codes["CODES · 8 references"]:16
-    c1["101"]:2 c2["102"]:2 c3["103"]:2 c4["401"]:2 c5["402"]:2 c6["403"]:2 c7["301"]:2 c8["302"]:2
-    evidence["EVIDENCE · retained sources"]:16
-    space:4 countsource["1001"]:4 lampsource["1002"]:4 space:4
+    columns 30
+    routineLabel["Routine status"]:10 ruleLabel["Count rule"]:10 lampLabel["Lamp mechanism"]:10
+    coarse["COARSE · summaries"]:30
+    space:2 routine["900<br/>Complete"]:6 space:4 summary["2<br/>Summary"]:6 space:12
+    fine["FINE · records and exact details"]:30
+    space:10 count["1<br/>Count rule"]:5 threshold["10<br/>Threshold"]:5 lamp["3<br/>Mechanism"]:5 worlds["2<br/>Worlds"]:5
+    codes["CODES · selected record details"]:30
+    space:12 c1["101"]:2 c2["102"]:2 c3["103"]:2 space:2 c4["401"]:2 c5["402"]:2 c6["403"]:2 c7["301"]:2 c8["302"]:2
+    evidence["EVIDENCE · retained sources"]:30
+    space:12 countsource["1001"]:6 space:4 lampsource["1002"]:6 space:2
+    style routineLabel fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style ruleLabel fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style lampLabel fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
     style coarse fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
     style fine fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
     style codes fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
     style evidence fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style routine fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:28px;
     style summary fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:28px;
-    style empty fill:#24212e,stroke:#aa91d2,color:#e3d8f2,font-size:28px,stroke-dasharray:5 4;
     style count fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
     style threshold fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
     style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
@@ -92,9 +96,11 @@ block-beta
     style lampsource fill:#234b38,stroke:#7ba98c,color:#ffffff,font-size:22px;
 ```
 
-Purple shows the stored summary and the empty lamp-summary slot. Teal shows records 1 and 3 alongside the threshold value and the number of worlds in the lamp fixture. The amber tiles are the eight code references in those records. Green shows the two evidence IDs. Tile widths follow the layers.
+Blank spaces show where a memory has no separate record at that level. An illustrative routine status keeps only the coarse “Complete” summary. The count rule keeps a summary, the exact threshold of 10, and its evidence. The lamp fixture keeps the mechanism and evidence directly, leaving its summary position empty.
 
-The initial synthetic store totals **1,365 bytes**, including 532 bytes for the shared codebook, labels, metadata, and JSON framing. The individual sizes are 135 bytes for summary 2, 168 for count rule 1, 209 for lamp mechanism 3, and 169 and 152 for evidence 1001 and 1002.
+The routine status tile is illustrative. The count rule and lamp tiles come from the runnable fixture. The design chooses which levels to store for each memory and retains exact values and evidence where the task requires them.
+
+The runnable demo’s initial store totals **1,365 bytes**, including 532 bytes for the shared codebook, labels, metadata, and JSON framing. The individual sizes are 135 bytes for summary 2, 168 for count rule 1, 209 for lamp mechanism 3, and 169 and 152 for evidence 1001 and 1002.
 
 For the count rule, code 101 means Count, 102 means strict greater-than, 103 means signed i32, and 104 identifies the summary category. The literal threshold is 10. Evidence IDs identify source records, and the code IDs inside the cards identify meanings in the codebook.
 
