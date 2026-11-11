@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L.O.R.E. memory demonstration</title>
+<style>
+:root { color-scheme: light dark; font: 16px/1.55 system-ui,sans-serif; --bg:light-dark(#faf8ff,#191425); --ink:light-dark(#282038,#f6efff); --muted:light-dark(#594a70,#d1c0e8); --accent:light-dark(#563588,#cbb0ff); --line:light-dark(#b4a2ca,#695680); --surface:light-dark(#efe8f8,#2a203b); }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); }
+main { width:min(72rem,100%); margin:auto; padding:2rem clamp(1rem,4vw,3rem) 4rem; }
+header { max-width:48rem; margin-bottom:2rem; }
+h1 { font-size:clamp(2rem,6vw,3.5rem); line-height:1.08; letter-spacing:-.025em; margin:.8rem 0 1rem; }
+h2 { font-size:1.25rem; margin:0 0 .8rem; }
+p { max-width:70ch; margin:.6rem 0 1rem; }
+a { color:var(--accent); text-underline-offset:.2em; }
+.workspace { display:grid; grid-template-columns:minmax(15rem,.85fr) minmax(0,1.4fr); gap:2rem; align-items:start; }
+.controls { padding:1.25rem 0; border-top:1px solid var(--line); }
+label { display:block; font-weight:650; margin-bottom:.4rem; }
+select,input,button { font:inherit; color:inherit; border:1px solid var(--line); border-radius:.5rem; }
+select,input { width:100%; background:var(--bg); padding:.65rem; }
+button { cursor:pointer; padding:.6rem .9rem; background:var(--surface); margin:.7rem .4rem .2rem 0; font-weight:600; }
+.primary { background:#563588; border-color:#563588; color:white; }
+button:hover { filter:brightness(1.13); }
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+small,.muted { color:var(--muted); }
+small { display:block; margin:.4rem 0 1rem; }
+.answer { background:var(--surface); border-radius:.75rem; padding:1.4rem; min-height:12rem; }
+#answer { font-size:1.3rem; font-weight:650; }
+#answer-detail { font-size:1rem; }
+.meter { display:grid; grid-template-columns:1fr auto; gap:.45rem 1rem; margin-top:1.5rem; }
+.meter dt,.meter dd { margin:0; font-variant-numeric:tabular-nums; }
+.meter dd { font-weight:650; text-align:right; }
+.trace { padding-left:1.3rem; }
+.trace li { margin:.6rem 0; }
+details { border-top:1px solid var(--line); padding:1rem 0; margin-top:1.25rem; }
+summary { cursor:pointer; font-weight:650; }
+pre { margin:1rem 0 0; padding:1rem; background:var(--surface); border-radius:.5rem; overflow:auto; max-height:32rem; font: .85rem/1.5 ui-monospace,monospace; tab-size:2; }
+.inspection { margin-top:2.5rem; }
+.fixture { margin-top:1.5rem; }
+.fixture table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+th,td { text-align:left; padding:.5rem .75rem .5rem 0; border-bottom:1px solid var(--line); }
+.graph-scroll { overflow:auto; border:1px solid var(--line); border-radius:.75rem; margin:1rem 0; }
+.graph-scroll svg { display:block; min-width:780px; width:100%; color:var(--ink); }
+.graph-node { cursor:pointer; }
+.graph-node rect { fill:var(--bg); stroke:var(--line); stroke-width:1; }
+.graph-node text { fill:#fff; font-family:system-ui,sans-serif; }
+.graph-node .node-sub { fill:#f2eafa; font-size:12px; }
+.graph-node.coarse rect { fill:#35244f; stroke:#aa91d2; }
+.graph-node.fine rect { fill:#194e48; stroke:#6ea59d; }
+.graph-node.evidence rect { fill:#234b38; stroke:#7ba98c; }
+.graph-node.selected rect { stroke:#fff; stroke-width:3; }
+.graph-node.invalid rect { fill:#632f43; stroke:#cf93ab; stroke-dasharray:5 4; }
+.graph-node.invalid.selected rect { stroke:#fff; }
+.graph-node:focus { outline:none; }
+.graph-node:focus rect { stroke:var(--accent); stroke-width:4; }
+.graph-edge { stroke:var(--line); fill:none; stroke-width:1.5; }
+.graph-edge.correction { stroke:var(--accent); stroke-dasharray:5 4; }
+.graph-label { fill:var(--muted); font:12px system-ui,sans-serif; }
+footer { margin-top:3rem; color:var(--muted); }
+::selection { background:#d4baff; color:#21102f; }
+@media(max-width:45rem) { .workspace { grid-template-columns:1fr; gap:1.25rem; } main { padding-top:1.5rem; } .answer { min-height:0; } }
+</style>
+</head>
+<body>
+<main>
+<header>
+<a href="../README.md">L.O.R.E. research preview</a>
+<h1>Ask at the right resolution.</h1>
+<p>A small memory engine answers from coarse codes when they are enough, opens exact records when needed, and keeps corrections and evidence inspectable.</p>
+<p class="muted">This deterministic CPU prototype uses synthetic records and a hand-authored codebook. Model training and learned resolution remain research work.</p>
+</header>
+<div class="workspace">
+<section aria-labelledby="controls-title">
+<h2 id="controls-title">Explore the memory</h2>
+<form id="query-form" class="controls">
+<label for="question">Question</label>
+<select id="question">
+<option value="1">What kind of control is stored?</option>
+<option value="2">What exact threshold does it use?</option>
+<option value="3">Observed switch on: is the lamp on?</option>
+<option value="4">Set the switch on: is the lamp on?</option>
+</select>
+<label for="read-budget">Read budget in code references</label>
+<select id="read-budget" aria-describedby="budget-help"><option value="3">3 references</option><option value="6" selected>6 references</option><option value="12">12 references</option></select>
+<small id="budget-help">Three references can answer the broad question. Exact refinement needs six, including its coarse candidate.</small>
+<button class="primary" type="submit">Ask memory</button>
+</form>
+<form id="correction-form" class="controls">
+<label for="threshold">Correct the synthetic threshold</label>
+<input id="threshold" type="number" value="12" min="-2147483648" max="2147483647" step="1" aria-describedby="correction-help">
+<small id="correction-help">Append a correction to the memory fixture. Its dependent coarse summary becomes invalid.</small>
+<button type="submit">Append correction</button>
+<button id="reset" type="button">Reset fixture</button>
+</form>
+<p id="mutation" role="status" class="muted">The original threshold is retained with its evidence.</p>
+<small id="persistence" role="status"></small>
+<div class="fixture">
+<h2>Synthetic causal fixture</h2>
+<p><code>switch = power</code><br><code>lamp = power AND switch</code></p>
+<table>
+<caption class="muted">Two equally weighted power states</caption>
+<thead><tr><th scope="col">Power</th><th scope="col">Switch</th><th scope="col">Lamp</th></tr></thead>
+<tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody>
+</table>
+<small>An observation selects existing rows. An intervention replaces the switch equation while preserving the power distribution.</small>
+</div>
+</section>
+<section aria-labelledby="result-title">
+<div class="answer" aria-live="polite">
+<h2 id="result-title">Answer</h2>
+<p id="answer"></p>
+<p id="answer-detail"></p>
+</div>
+<dl class="meter" aria-label="Measured work">
+<dt>Full serialized store</dt><dd id="bytes"></dd>
+<dt>Selected code references</dt><dd id="codes"></dd>
+<dt>Counted rule evaluations</dt><dd id="steps"></dd>
+<dt>Actual model positions</dt><dd>Unavailable</dd>
+</dl>
+<small>UTF-8 bytes include the codebook, records, exact fields, labels, and retained evidence. Code references count occurrences in selected records. Rule counts follow the trace below. This prototype has no learned model.</small>
+<h2>Resolution and rule trace</h2>
+<ol id="trace" class="trace"></ol>
+</section>
+</div>
+<section class="inspection" aria-labelledby="graph-title">
+<h2 id="graph-title">Memory knowledge graph</h2>
+<p>The graph comes from the stored dependencies, supersession links, and evidence references. The current query selects outlined nodes. Dashed nodes are invalidated or superseded. Select a node to inspect its numeric record.</p>
+<div class="graph-scroll" tabindex="0" aria-label="Memory graph, horizontally scrollable"><svg id="graph" role="group" aria-label="Memory records connected to retained evidence"></svg></div>
+<small>Purple shows coarse concepts, teal shows fine memory records, green shows retained evidence, and rose shows invalidated or superseded state. Solid arrows show dependency and evidence links. Dashed arrows show correction and invalidation links. Scroll horizontally on smaller screens.</small>
+<details open><summary>Selected graph node</summary><pre id="graph-record">Select a graph node.</pre></details>
+</section>
+<section class="inspection" aria-labelledby="inspect-title">
+<h2 id="inspect-title">Inspect what the engine used</h2>
+<details><summary>Selected records and evidence</summary><pre id="selection"></pre></details>
+<details><summary>Complete store and versioned codebook</summary><pre id="store"></pre></details>
+</section>
+<footer><p>Only the synthetic fixture is saved in this browser. Reset restores the initial fixture. The original Wasm pilot is available in the <a href="index.html">count demonstration</a>.</p></footer>
+</main>
+<script id="memory-engine">
+(() => {
+  "use strict";
+  const VERSION = 1;
+  const LIMITS = Object.freeze({ bytes:65536, records:32, evidence:32, codeReferences:64 });
+  const K = Object.freeze({ BROAD: 1, EXACT: 2, OBSERVE: 3, INTERVENE: 4 });
+  const C = Object.freeze({ COUNT:101, GT:102, I32:103, CATEGORY:104,
+    IDENTITY:301, AND:302, POWER:401, SWITCH:402, LAMP:403 });
+  const E = Object.freeze({ STORE:1, VERSION:2, RECORD:3, EVIDENCE:4,
+    QUERY:5, LITERAL:6, MISSING:7, CAUSAL:8, CAPACITY:9, BUDGET:10 });
+  const clone = value => JSON.parse(JSON.stringify(value));
+
+  function create() {
+    return {
+      schema:VERSION,
+      codebook:{ version:VERSION, entries:[
+        {code:C.COUNT,arity:2},{code:C.GT,arity:2},{code:C.I32,arity:0},
+        {code:C.CATEGORY,arity:1},{code:C.IDENTITY,arity:1},{code:C.AND,arity:2},
+        {code:C.POWER,arity:0},{code:C.SWITCH,arity:0},{code:C.LAMP,arity:0}
+      ]},
+      records:[
+        {id:1,version:VERSION,kind:1,level:0,status:1,codes:[C.COUNT,C.GT,C.I32],
+          literals:{threshold:{type:C.I32,value:10}},evidence:[1001],depends:[],supersedes:[]},
+        {id:2,version:VERSION,kind:2,level:2,status:1,codes:[C.COUNT,C.I32,C.CATEGORY],
+          children:[1],evidence:[1001],depends:[1],supersedes:[]},
+        {id:3,version:VERSION,kind:3,level:0,status:1,
+          codes:[C.POWER,C.SWITCH,C.LAMP,C.IDENTITY,C.AND],
+          worlds:[[0,0,0,1],[1,1,1,1]],
+          mechanisms:[[C.SWITCH,C.IDENTITY,[C.POWER]],[C.LAMP,C.AND,[C.POWER,C.SWITCH]]],
+          evidence:[1002],depends:[],supersedes:[]}
+      ],
+      evidence:[
+        {id:1001,source:"Synthetic fixture author",event:1,
+          text:"The bounded signed-i32 count fixture uses strict greater-than with threshold 10. Equality is excluded."},
+        {id:1002,source:"Synthetic fixture author",event:1,
+          text:"Two equally weighted power states. Switch equals power. Lamp equals power AND switch."}
+      ],
+      presentation:{
+        codes:{"101":"Count","102":"Strict greater-than","103":"Signed i32","104":"Control category",
+          "301":"Identity","302":"AND","401":"Power","402":"Switch","403":"Lamp"},
+        statuses:{"0":"Invalidated","1":"Current","2":"Superseded"}
+      }
+    };
+  }
+
+  function fail(code) { throw { memoryError:code }; }
+  function i32(value) { return Number.isInteger(value) && value >= -2147483648 && value <= 2147483647; }
+  function validate(store) {
+    if (!store || !store.codebook || !Array.isArray(store.records) || !Array.isArray(store.evidence)) fail(E.STORE);
+    if (store.schema !== VERSION || store.codebook.version !== VERSION) fail(E.VERSION);
+    if (!Array.isArray(store.codebook.entries)) fail(E.STORE);
+    const known = new Set(store.codebook.entries.map(entry => entry.code));
+    const expected = create().codebook.entries;
+    if (known.size !== 9 || JSON.stringify(store.codebook.entries) !== JSON.stringify(expected)) fail(E.VERSION);
+    if (store.records.length > LIMITS.records || store.evidence.length > LIMITS.evidence
+      || new TextEncoder().encode(JSON.stringify(store)).byteLength > LIMITS.bytes) fail(E.CAPACITY);
+    const validId = id => Number.isSafeInteger(id) && id > 0;
+    if (store.records.some(record => !record || !validId(record.id))
+      || store.evidence.some(record => !record || !validId(record.id))) fail(E.RECORD);
+    const ids = new Set(store.records.map(record => record.id));
+    const evidence = new Set(store.evidence.map(record => record.id));
+    if (ids.size !== store.records.length || evidence.size !== store.evidence.length
+      || [...ids].some(id => evidence.has(id))) fail(E.RECORD);
+    for (const source of store.evidence) {
+      if (typeof source.source !== "string" || !source.source
+        || typeof source.text !== "string" || !source.text || !validId(source.event)) fail(E.EVIDENCE);
+    }
+    for (const record of store.records) {
+      if (record.version !== VERSION) fail(E.VERSION);
+      if (record.kind === 2 && record.status === 1
+        && record.depends.some(id => store.records.find(item => item.id === id)?.status !== 1)) fail(E.RECORD);
+      if (![1,2,3].includes(record.kind) || ![0,1,2].includes(record.status)
+        || record.level !== (record.kind === 2 ? 2 : 0)
+        || !Array.isArray(record.codes) || !record.codes.length || record.codes.some(code => !known.has(code))
+        || !Array.isArray(record.depends) || !Array.isArray(record.supersedes)) fail(E.RECORD);
+      for (const links of [record.depends,record.supersedes]) {
+        if (new Set(links).size !== links.length || links.some(id => !ids.has(id) || id === record.id)) fail(E.RECORD);
+      }
+      if (record.kind === 2 && (!Array.isArray(record.children) || !record.children.length
+        || record.children.some(id => !ids.has(id) || id === record.id))) fail(E.RECORD);
+      if (record.invalidatedBy !== undefined && (!ids.has(record.invalidatedBy)
+        || record.invalidatedBy === record.id || record.status !== 0)) fail(E.RECORD);
+      if (record.kind === 1 && (record.literals?.threshold?.type !== C.I32
+        || !i32(record.literals.threshold.value))) fail(E.LITERAL);
+      if (!Array.isArray(record.evidence) || !record.evidence.length
+        || record.evidence.some(id => !evidence.has(id))) fail(E.EVIDENCE);
+    }
+    if (store.records.filter(record => record.kind === 1 && record.status === 1).length !== 1) fail(E.MISSING);
+    const visited = new Set();
+    const pending = new Set();
+    function visit(id) {
+      if (pending.has(id)) fail(E.RECORD);
+      if (visited.has(id)) return;
+      pending.add(id);
+      store.records.find(record => record.id === id).depends.forEach(visit);
+      pending.delete(id);
+      visited.add(id);
+    }
+    store.records.forEach(record => visit(record.id));
+    return true;
+  }
+
+  function fact(store) {
+    const active = store.records.filter(record => record.kind === 1 && record.status === 1);
+    if (active.length !== 1) fail(E.MISSING);
+    const result = active[0];
+    const threshold = result.literals?.threshold;
+    if (threshold?.type !== C.I32 || !i32(threshold.value)
+      || JSON.stringify(result.codes) !== JSON.stringify([C.COUNT,C.GT,C.I32])) fail(E.LITERAL);
+    return result;
+  }
+
+  function measure(store, selected, trace) {
+    const unique = [...new Set(selected)];
+    return {
+      serializedBytes:new TextEncoder().encode(JSON.stringify(store)).byteLength,
+      selectedCodeReferences:unique.reduce((sum,id) => sum + (store.records.find(r => r.id === id)?.codes.length || 0),0),
+      ruleEvaluations:trace.length,
+      modelPositions:null
+    };
+  }
+
+  function query(store, kind, maxCodeReferences=6) {
+    const trace = [];
+    const selected = [];
+    const step = (rule, ids=[]) => {
+      const next = [...new Set([...selected,...ids])];
+      const refs = next.reduce((sum,id) => sum + (store.records.find(record => record.id === id)?.codes.length || 0),0);
+      if (refs > maxCodeReferences) { trace.push({rule:10,records:[]}); fail(E.BUDGET); }
+      trace.push({rule,records:ids});
+      ids.forEach(id => selected.push(id));
+    };
+    try {
+      validate(store);
+      if (!Number.isInteger(maxCodeReferences) || maxCodeReferences < 0 || maxCodeReferences > LIMITS.codeReferences) fail(E.BUDGET);
+      step(1);
+      if (!Object.values(K).includes(kind)) fail(E.QUERY);
+      let answer;
+      let level;
+      if (kind === K.BROAD || kind === K.EXACT) {
+        const coarse = store.records.find(record => record.id === 2 && record.kind === 2);
+        if (!coarse) fail(E.MISSING);
+        step(2,[coarse.id]);
+        if (kind === K.BROAD && coarse.status === 1) {
+          if (JSON.stringify(coarse.codes) !== JSON.stringify([C.COUNT,C.I32,C.CATEGORY])) fail(E.RECORD);
+          step(3,[coarse.id]);
+          answer = {type:1,codes:[C.COUNT,C.I32]};
+          level = 2;
+        } else {
+          step(coarse.status === 1 ? 4 : 5,[coarse.id]);
+          const detail = fact(store);
+          step(6,[detail.id]);
+          answer = kind === K.BROAD ? {type:1,codes:[C.COUNT,C.I32]}
+            : {type:2,operator:C.GT,value:detail.literals.threshold.value,valueType:C.I32};
+          level = 0;
+        }
+      } else {
+        const causal = store.records.find(record => record.kind === 3 && record.status === 1);
+        if (!causal) fail(E.MISSING);
+        step(7,[causal.id]);
+        if (JSON.stringify(causal.mechanisms) !== JSON.stringify([
+          [C.SWITCH,C.IDENTITY,[C.POWER]],[C.LAMP,C.AND,[C.POWER,C.SWITCH]]
+        ]) || !Array.isArray(causal.worlds) || causal.worlds.length !== 2
+          || causal.worlds.some((row,index) => !Array.isArray(row) || row.length !== 4
+            || row[0] !== index || row[1] !== row[0] || row[2] !== (row[0] & row[1]) || row[3] !== 1)) fail(E.CAUSAL);
+        let numerator = 0;
+        let denominator = 0;
+        for (const [power, observedSwitch, observedLamp, weight] of causal.worlds) {
+          if (kind === K.OBSERVE) {
+            step(8,[causal.id]);
+            if (observedSwitch === 1) { numerator += observedLamp * weight; denominator += weight; }
+          } else {
+            step(9,[causal.id]);
+            const interventionSwitch = 1;
+            const lamp = power & interventionSwitch;
+            numerator += lamp * weight;
+            denominator += weight;
+          }
+        }
+        if (denominator === 0) fail(E.CAUSAL);
+        answer = {type:kind,numerator,denominator,variable:C.LAMP,condition:[C.SWITCH,1]};
+        level = 0;
+      }
+      const ids = [...new Set(selected)];
+      const evidenceIds = [...new Set(ids.flatMap(id => store.records.find(record => record.id === id).evidence))];
+      return {status:1,kind,level,answer,selected:ids,evidence:evidenceIds,trace,
+        metrics:measure(store,ids,trace)};
+    } catch (error) {
+      return {status:0,kind,error:error.memoryError || E.STORE,selected:[...new Set(selected)],trace,
+        metrics: safeMeasure(store,selected,trace)};
+    }
+  }
+
+  function safeMeasure(store,selected,trace) {
+    try { return measure(store,selected,trace); }
+    catch { return {serializedBytes:null,selectedCodeReferences:0,ruleEvaluations:trace.length,modelPositions:null}; }
+  }
+
+  function correct(store, value) {
+    try {
+      validate(store);
+      if (!i32(value)) fail(E.LITERAL);
+      const old = fact(store);
+      const next = clone(store);
+      const nextId = Math.max(...next.records.map(record => record.id)) + 1;
+      const evidenceId = Math.max(...next.evidence.map(record => record.id)) + 1;
+      next.evidence.push({id:evidenceId,source:"Synthetic user correction",event:nextId,
+        text:"Threshold corrected to " + value + ". Strict greater-than and signed i32 remain the declared fixture semantics."});
+      next.records.find(record => record.id === old.id).status = 2;
+      next.records.push({...clone(old),id:nextId,status:1,
+        literals:{threshold:{type:C.I32,value}},evidence:[evidenceId],supersedes:[old.id]});
+      const affected = new Set([old.id]);
+      const invalidated = [];
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const record of next.records) {
+          if (record.status === 1 && record.depends.some(id => affected.has(id))) {
+            record.status = 0;
+            record.invalidatedBy = nextId;
+            affected.add(record.id);
+            invalidated.push(record.id);
+            changed = true;
+          }
+        }
+      }
+      validate(next);
+      return {status:1,store:next,appended:nextId,evidence:evidenceId,invalidated,superseded:old.id};
+    } catch (error) { return {status:0,error:error.memoryError || E.STORE}; }
+  }
+
+  function serialize(store) {
+    validate(store);
+    return JSON.stringify(store);
+  }
+
+  function restore(serialized) {
+    try {
+      if (typeof serialized !== "string" || new TextEncoder().encode(serialized).byteLength > LIMITS.bytes) fail(E.STORE);
+      const store = JSON.parse(serialized);
+      validate(store);
+      fact(store);
+      const causal = query(store,K.INTERVENE);
+      if (causal.status !== 1) fail(causal.error);
+      return {status:1,store};
+    } catch (error) { return {status:0,error:error.memoryError || E.STORE}; }
+  }
+
+  globalThis.LoreMemory = Object.freeze({create,query,correct,validate,measure,serialize,restore,K,C,E,LIMITS});
+})();
+</script>
+<script>
+(() => {
+  "use strict";
+  const engine = globalThis.LoreMemory;
+  let store = engine.create();
+  let restoreError = null;
+  const storageKey = "lore-synthetic-memory-v1";
+  const $ = id => document.getElementById(id);
+  const rules = {
+    1:"Check the store schema, codebook version, record types, and evidence links.",
+    2:"Read the coarse candidate record.",
+    3:"Answer the category query from the valid coarse codes.",
+    4:"The question needs an exact literal. Expand to the current fine record.",
+    5:"The coarse summary is invalid. Read the current fine record.",
+    6:"Read the typed exact threshold and preserve strict comparison semantics.",
+    7:"Read and validate the synthetic mechanism and weighted worlds.",
+    8:"Condition an observed world on switch = 1.",
+    9:"Replace the switch equation with switch = 1, then evaluate the lamp mechanism.",
+    10:"The next record would exceed the selected code-reference budget. Abstain before adding it to the selected context."
+  };
+  const errors = {
+    1:"The store is malformed.",2:"The schema or codebook version is unsupported.",
+    3:"A record is malformed.",4:"Required evidence is missing.",
+    5:"The query kind is unsupported.",6:"The exact threshold must be a signed 32-bit integer.",
+    7:"A required current record is missing.",8:"The causal fixture is inconsistent.",
+    9:"The synthetic store reached its bounded capacity.",
+    10:"The selected read budget cannot cover this query."
+  };
+
+  function persist() {
+    try {
+      localStorage.setItem(storageKey,engine.serialize(store));
+      $("persistence").textContent = "Synthetic fixture saved in this browser. Reload preserves its corrections and evidence.";
+    } catch {
+      $("persistence").textContent = "Browser storage is unavailable. The fixture remains available for this session.";
+    }
+  }
+
+  function renderGraph(result) {
+    const svg = $("graph");
+    const ns = "http://www.w3.org/2000/svg";
+    const element = (tag,attributes={},text) => {
+      const node = document.createElementNS(ns,tag);
+      Object.entries(attributes).forEach(([key,value]) => node.setAttribute(key,value));
+      if (text !== undefined) node.textContent = text;
+      return node;
+    };
+    const positions = new Map();
+    const columns = [
+      {x:25,title:"Coarse summaries",nodes:store.records.filter(r => r.level === 2).map(r => ({...r,category:1}))},
+      {x:315,title:"Fine records",nodes:store.records.filter(r => r.level === 0).map(r => ({...r,category:1}))},
+      {x:605,title:"Evidence",nodes:store.evidence.map(r => ({...r,category:2}))}
+    ];
+    const height = Math.max(...columns.map(column => column.nodes.length)) * 100 + 70;
+    svg.setAttribute("viewBox","0 0 870 " + height);
+    svg.replaceChildren();
+    const defs = element("defs");
+    const marker = element("marker",{id:"arrow",viewBox:"0 0 10 10",refX:9,refY:5,markerWidth:7,markerHeight:7,orient:"auto-start-reverse"});
+    marker.append(element("path",{d:"M 0 0 L 10 5 L 0 10 z",fill:"currentColor"}));
+    defs.append(marker);
+    svg.append(defs);
+    columns.forEach(column => {
+      svg.append(element("text",{x:column.x,y:27,class:"graph-label"},column.title));
+      column.nodes.forEach((node,index) => positions.set(node.id,{x:column.x,y:48+index*100,node}));
+    });
+    const edges = [];
+    store.records.forEach(record => {
+      record.depends.forEach(id => edges.push({from:record.id,to:id,label:"depends",correction:false}));
+      record.evidence.forEach(id => edges.push({from:record.id,to:id,label:"evidence",correction:false}));
+      record.supersedes.forEach(id => edges.push({from:record.id,to:id,label:"supersedes",correction:true}));
+      if (record.invalidatedBy) edges.push({from:record.id,to:record.invalidatedBy,label:"invalidated by",correction:true});
+    });
+    edges.forEach(edge => {
+      const from = positions.get(edge.from);
+      const to = positions.get(edge.to);
+      if (!from || !to) return;
+      const sameColumn = from.x === to.x;
+      const x1 = from.x + (sameColumn ? 0 : 225);
+      const x2 = to.x;
+      const y1 = from.y + 33;
+      const y2 = to.y + 33;
+      const bend = sameColumn ? from.x-20 : (x1+x2)/2;
+      const path = "M "+x1+" "+y1+" C "+bend+" "+y1+" "+bend+" "+y2+" "+x2+" "+y2;
+      svg.append(element("path",{d:path,class:"graph-edge"+(edge.correction?" correction":""),"marker-end":"url(#arrow)"}));
+      if (edge.label !== "evidence") svg.append(element("text",{x:sameColumn?bend-5:(x1+x2)/2,y:(y1+y2)/2-6,class:"graph-label","text-anchor":sameColumn?"end":"middle"},edge.label));
+    });
+    positions.forEach(({x,y,node}) => {
+      const selected = node.category === 1 ? result.selected.includes(node.id) : result.evidence?.includes(node.id);
+      const invalid = node.category === 1 && node.status !== 1;
+      const title = (node.category === 1 ? "Record " : "Evidence ") + node.id;
+      const label = node.category === 2 ? node.source : ({0:"Invalidated",1:"Current",2:"Superseded"})[node.status];
+      const group = element("g",{class:"graph-node "+(node.category===2?"evidence":node.level===2?"coarse":"fine")+(selected?" selected":"")+(invalid?" invalid":""),role:"button",tabindex:0,"aria-label":title+", "+label});
+      group.append(element("rect",{x,y,width:225,height:65,rx:8}));
+      group.append(element("text",{x:x+12,y:y+25,"font-size":15,"font-weight":650},title));
+      group.append(element("text",{x:x+12,y:y+46,class:"node-sub"},label));
+      const inspect = () => { $("graph-record").textContent = JSON.stringify(node.category===1?store.records.find(r=>r.id===node.id):store.evidence.find(r=>r.id===node.id),null,2); };
+      group.addEventListener("click",inspect);
+      group.addEventListener("keydown",event => { if(event.key==="Enter" || event.key===" ") {event.preventDefault();inspect();} });
+      svg.append(group);
+    });
+  }
+
+  function render() {
+    const result = restoreError
+      ? {status:0,error:restoreError,selected:[],trace:[],metrics:engine.measure(store,[],[])}
+      : engine.query(store,Number($("question").value),Number($("read-budget").value));
+    if (result.status === 0) {
+      $("answer").textContent = "Abstained";
+      $("answer-detail").textContent = errors[result.error] + (result.error===engine.E.BUDGET ? " Increase the read budget or ask a broader question." : " Reset the fixture to recover.");
+    } else if (result.answer.type === 1) {
+      $("answer").textContent = "A bounded signed-integer count control.";
+      $("answer-detail").textContent = result.level === 2
+        ? "The valid coarse record is sufficient. Its exact threshold stays in the fine record."
+        : "A dependent coarse summary was invalidated, so the answer uses the current fine record.";
+    } else if (result.answer.type === 2) {
+      $("answer").textContent = "Count values strictly greater than " + result.answer.value + ".";
+      $("answer-detail").textContent = "The exact signed-i32 threshold came from the current fine record. Equality is excluded.";
+    } else {
+      $("answer").textContent = "Lamp-on probability = " + result.answer.numerator + "/" + result.answer.denominator + ".";
+      $("answer-detail").textContent = result.kind === engine.K.OBSERVE
+        ? "Observing switch = 1 selects the powered world. The observed probability is 1."
+        : "Setting switch = 1 preserves both power states. The intervention probability is 1/2.";
+    }
+    $("bytes").textContent = result.metrics.serializedBytes === null ? "Unavailable" : result.metrics.serializedBytes.toLocaleString() + " bytes";
+    $("codes").textContent = result.metrics.selectedCodeReferences;
+    $("steps").textContent = result.metrics.ruleEvaluations;
+    $("trace").replaceChildren(...result.trace.map(item => {
+      const li = document.createElement("li");
+      li.textContent = rules[item.rule] + (item.records.length ? " Record " + item.records.join(", ") + "." : "");
+      return li;
+    }));
+    $("selection").textContent = JSON.stringify({
+      query:result.kind,answer:result.answer || null,resolutionLevel:result.level ?? null,
+      selectedRecords:store.records.filter(record => result.selected.includes(record.id)),
+      evidence:store.evidence.filter(record => result.evidence?.includes(record.id))
+    },null,2);
+    $("store").textContent = JSON.stringify(store,null,2);
+    renderGraph(result);
+  }
+
+  $("query-form").addEventListener("submit",event => { event.preventDefault(); render(); });
+  $("question").addEventListener("change",render);
+  $("read-budget").addEventListener("change",render);
+  $("correction-form").addEventListener("submit",event => {
+    event.preventDefault();
+    const raw = $("threshold").value.trim();
+    const result = engine.correct(store,raw === "" ? NaN : Number(raw));
+    if (result.status === 0) {
+      $("mutation").textContent = errors[result.error] + " The store was preserved.";
+      return;
+    }
+    store = result.store;
+    restoreError = null;
+    persist();
+    $("mutation").textContent = "Appended record " + result.appended + " and evidence " + result.evidence
+      + ". Superseded record " + result.superseded + ". Invalidated summaries: "
+      + (result.invalidated.join(", ") || "none already current") + ".";
+    render();
+  });
+  $("reset").addEventListener("click",() => {
+    store = engine.create();
+    restoreError = null;
+    persist();
+    $("graph-record").textContent = "Select a graph node.";
+    $("threshold").value = "12";
+    $("mutation").textContent = "Fixture reset. The original threshold and evidence are current.";
+    render();
+  });
+  try {
+    const saved = localStorage.getItem(storageKey);
+    if (saved !== null) {
+      const restored = engine.restore(saved);
+      if (restored.status === 1) {
+        store = restored.store;
+        $("mutation").textContent = "Restored the saved synthetic fixture, including its correction history.";
+      } else {
+        restoreError = restored.error;
+        $("mutation").textContent = "The saved fixture could not be restored. Reset it to recover.";
+      }
+    }
+    if (!restoreError) persist();
+  } catch {
+    $("persistence").textContent = "Browser storage is unavailable. The fixture is session-only.";
+  }
+  render();
+})();
+</script>
+</body>
+</html>

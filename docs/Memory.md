@@ -121,7 +121,7 @@ The demo compares observation and intervention using its explicit structural rul
 | Rule work | Counted deterministic operations used to answer |
 | Model positions and inference work | Measurements for a future learned reasoner |
 
-Fewer selected references do not establish lower total storage or learned-model savings. The prototype measures the costs it actually performs.
+Fewer selected references do not establish lower total storage or learned-model savings. The prototype measures the costs it actually performs. Selected references describe the answer context. Store validation and lookup perform additional work. The fixed demo HTML and rule implementation are separate artifact bytes.
 
 ## Research context
 
@@ -130,3 +130,7 @@ Discrete learned representations have a precedent in VQ-VAE. Hierarchical retrie
 Causal interpretation requires a mechanism and assumptions about interventions. [Schölkopf, Causality for Machine Learning](https://arxiv.org/abs/1911.10500)
 
 [Architecture](Architecture.md) · [Subsystems](Subsystems.md) · [Research plan](Research_Plan.md) · [Overview](../README.md)
+
+## Repeat the engine checks
+
+From the repository root, run `node demo/check_memory.mjs`. The dependency-free checks exercise resolution budgets, exact values, correction history, invalidation, schema validation, persistence roundtrips and the synthetic causal outcomes. The check command was tested with Node.js 26.
