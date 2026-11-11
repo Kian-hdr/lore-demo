@@ -51,10 +51,12 @@ flowchart TD
     D --> E["Candidate instruction plan"]
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class A plan;
+    classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
+    class C data;
     classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
     class B,E exec;
-    classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
-    class C,D data;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class D check;
 ```
 
 In the count example, the sequence needs a load, signed comparison, running sum, index update and loop. The fixed pilot fixture makes those choices by hand. A learned head would have to generate valid sequences on new tasks and pass the same independent evaluation.
@@ -69,10 +71,10 @@ flowchart TD
     B --> C["Write binary instructions and module sections"]
     C --> D["Fresh WebAssembly module"]
     C --> E["Origin map<br/>Byte spans to graph operations"]
-    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
-    class A,C,D exec;
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class E plan;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class A,C,D exec;
 ```
 
 This boundary separates algorithm and instruction choices from byte serialization. The pilot emitted a fresh module directly from its fixture and reproduced it byte for byte.
@@ -90,9 +92,9 @@ flowchart TD
     D -->|Check fails| F["Diagnostic and failure evidence"]
     G["Separate evaluation oracle"] --> D
     classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
-    class A,B,E exec;
+    class A exec;
     classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    class C,D check;
+    class B,E,C,D check;
     classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
     class F change;
 ```
@@ -111,12 +113,12 @@ flowchart TD
     D --> E["Recheck joins and rerun independent tests"]
     E -->|Pass| F["New artifact and receipt"]
     E -->|Budget exhausted| G["Failure receipt"]
-    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
-    class A,B,D,G change;
     classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
     class C exec;
     classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
     class E,F check;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A,B,D,G change;
 ```
 
 The state-feedback experiment would compare a generator with and without compact execution-state observations. The pilot demonstrated diagnostic localization and manual restoration of known fixtures. Automatic repair remains an experiment.

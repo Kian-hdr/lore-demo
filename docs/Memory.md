@@ -16,14 +16,12 @@ flowchart TD
     C --> E["Fine facts and evidence links"]
     D --> F["Persistent memory store"]
     E --> F
-    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
-    class A change;
-    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
-    class B exec;
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class D plan;
     classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
-    class E,F data;
+    class B,E,F,C data;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A change;
 ```
 
 The codebook defines what a code means. Entity references and literal fields allow new episodes to combine existing concepts with new values. Each episode does not require a newly trained vocabulary item. Schema and codebook versions prevent an old ID from silently acquiring a new meaning.
@@ -86,10 +84,10 @@ flowchart TD
     B --> C["Invalidate dependent coarse summaries"]
     C --> D["Recompute or refine the next answer"]
     B --> E["Retain earlier evidence and correction link"]
-    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
-    class A,C,E change;
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class D plan;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A,C,E change;
 ```
 
 Continuous memory updates change stored facts and derived summaries. Training changes model parameters. These are separate operations with separate evaluation needs.

@@ -22,11 +22,13 @@ flowchart TD
     D -. "Affected instruction sequence" .-> I
     D -->|Budget exhausted| X["Failure receipt"]
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
-    class P,C,Q,N,G plan;
-    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
-    class E,I,B,V,R exec;
+    class P,C,Q,N,G,E plan;
     classDef data fill:#194e48,stroke:#6ea59d,color:#ffffff;
     class M data;
+    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
+    class I,B exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class V,R check;
     classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
     class D,X change;
 ```
@@ -90,12 +92,12 @@ flowchart TD
     H --> I["Rerun failing case and final independent checks"]
     I -->|Pass| J["New binary and receipt"]
     I -->|Budget exhausted| K["Failure receipt with evidence"]
-    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
-    class A,E,F,G,H,I,K change;
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class D plan;
-    classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
-    class J exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class I,J check;
+    classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
+    class A,E,F,G,H,K change;
 ```
 
 The optional instruction-level experiment would feed bounded summaries of stack, locals, memory, control flow, or a failed property back to the generator. The behavioral contract remains fixed during that experiment. Compare the generator with and without this feedback using matched latency or compute budgets.
@@ -114,10 +116,10 @@ flowchart TD
     D --> F
     E --> F
     F --> G["Run integration checks and return the artifact"]
-    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    class A,F,G check;
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class C,D plan;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class A,F,G check;
 ```
 
 Measure critical-path rounds, join failures, repair costs, total compute, and wall time. Distribution is a candidate execution profile, whose overhead and consistency costs need evaluation.
@@ -134,10 +136,10 @@ flowchart TD
     F --> G["Artifact and execution receipt"]
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class A plan;
-    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    class B,F,G check;
     classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
     class C,D,E exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class B,F,G check;
 ```
 
 The original harness also checked an invalid local instruction and an incompatible graph join. The browser demo runs the prebuilt accepted module with new input values. [Worked example](Worked_Example.md) · [Try it](Try_It.md) · [Evidence limits](Limits.md)

@@ -18,14 +18,24 @@ block-beta
     fine["FINE · 8 code IDs"]:8
     g["8"] h["26"] i["74"] j["105"] k["186"] l["329"] m["488"] n["652"]
     decoder["Accumulate the levels, then decode text tokens"]:8
-    classDef heading fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
-    classDef broad fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:30px;
-    classDef refine fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
-    classDef detail fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
-    class coarse,middle,fine,decoder heading;
-    class a,b broad;
-    class c,d,e,f refine;
-    class g,h,i,j,k,l,m,n detail;
+    style coarse fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style middle fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style fine fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style decoder fill:#30303c,stroke:#777786,color:#ffffff,font-size:18px;
+    style a fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:28px;
+    style b fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:28px;
+    style c fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style d fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style e fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style f fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:24px;
+    style g fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style h fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style i fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style j fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style k fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style l fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style m fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
+    style n fill:#62422d,stroke:#c39770,color:#ffffff,font-size:20px;
 ```
 
 Read from top to bottom. Fewer coarse codes summarize structure across the sequence. Finer levels supply residual detail, and the completed representation is decoded into tokens. Rows represent refinement levels. An ID names a codebook entry. The number printed in a tile is not a token count or an abstraction score.
@@ -61,10 +71,10 @@ flowchart TD
     G --> K["Wasm control-flow instructions"]
     classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
     class A,B,C plan;
-    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
-    class F check;
     classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
     class H,I,J,K exec;
+    classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
+    class F check;
 ```
 
 The top specifies the task. The middle makes operations and interfaces explicit. The bottom supplies target execution detail. In the pilot, the graph and instructions were hand-authored. Evaluating learned versions is part of the research plan.

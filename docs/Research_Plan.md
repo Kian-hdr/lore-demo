@@ -14,12 +14,12 @@ flowchart TD
     E --> F
     F --> G["Compare repair, machine-state feedback and execution profiles"]
     G --> H["Expand to scoped component and application tasks"]
+    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    class D plan;
     classDef exec fill:#62422d,stroke:#c39770,color:#ffffff;
     class A,E exec;
     classDef check fill:#234b38,stroke:#7ba98c,color:#ffffff;
     class B check;
-    classDef plan fill:#35244f,stroke:#aa91d2,color:#ffffff;
-    class D plan;
     classDef change fill:#632f43,stroke:#cf93ab,color:#ffffff;
     class G change;
 ```
