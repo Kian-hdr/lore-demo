@@ -226,13 +226,17 @@ flowchart TD
 
 ```mermaid
 block-beta
-    columns 18
-    space:6 summary["Coarse summary<br/>Record 2 · 135 B<br/>101 · 103 · 104"]:6 space:6
-    gap1[" "]:18
-    space:1 count["Exact threshold 10<br/>Record 1 · 168 B<br/>101 · 102 · 103"]:7 space:1 lamp["Lamp mechanism<br/>Record 3 · 209 B<br/>401 · 402 · 403 · 301 · 302"]:9
-    gap2[" "]:18
-    space:1 countsource["Count rule source<br/>Evidence 1001 · 169 B"]:7 space:2 lampsource["Lamp fixture source<br/>Evidence 1002 · 152 B"]:6 space:2
+    columns 20
+    coarse["COARSE<br/>Summary"]:3 summary["Record 2 · 135 B<br/>101 Count · 103 signed i32<br/>104 Control category"]:6 space:1 empty["Empty<br/>No lamp summary stored"]:9 space:1
+    gap1[" "]:20
+    fine["FINE<br/>Exact detail"]:3 count["Record 1 · 168 B<br/>101 Count · 103 signed i32<br/>102 Greater than · threshold 10"]:7 space:1 lamp["Record 3 · 209 B<br/>401 Power · 402 Switch · 403 Lamp<br/>301 Identity · 302 AND"]:9
+    gap2[" "]:20
+    evidence["EVIDENCE<br/>Source"]:3 countsource["Evidence 1001 · 169 B<br/>Count rule source"]:7 space:1 lampsource["Evidence 1002 · 152 B<br/>Lamp fixture source"]:6 space:3
+    style coarse fill:none,stroke:none,font-weight:bold;
+    style fine fill:none,stroke:none,font-weight:bold;
+    style evidence fill:none,stroke:none,font-weight:bold;
     style summary fill:#35244f,stroke:#aa91d2,color:#ffffff;
+    style empty fill:#24212e,stroke:#aa91d2,color:#e3d8f2,stroke-dasharray:5 4;
     style count fill:#194e48,stroke:#6ea59d,color:#ffffff;
     style lamp fill:#194e48,stroke:#6ea59d,color:#ffffff;
     style countsource fill:#234b38,stroke:#7ba98c,color:#ffffff;
@@ -241,7 +245,7 @@ block-beta
     style gap2 fill:none,stroke:none,opacity:0;
 ```
 
-Read from top to bottom. Purple shows the coarse summary, teal shows exact facts and mechanisms, and green shows retained evidence. Card widths approximate each record's size, with exact byte counts on the cards.
+The top row holds coarse summaries, the middle holds exact details, and the bottom holds evidence. The dashed slot shows that the lamp fixture has no stored summary. Its exact mechanism and source are present below. Filled cards pair code IDs with their meanings and show exact byte counts.
 
 The initial synthetic store totals **1,365 bytes**, including 532 bytes for the shared codebook, labels, metadata, and JSON framing.
 
