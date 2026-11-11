@@ -8,21 +8,106 @@ The research question is whether this approach can improve verified task complet
 
 ## The system we want to build
 
+### 1. English to a tested executable
+
 ```mermaid
 flowchart TD
-    A["Plain-English request"] --> B["Infer behavior, types and assumptions"]
-    B --> C["Plan and refine a typed program graph"]
-    C --> D["Generate instruction opcodes and operands"]
-    D --> E["Encode a fresh executable module"]
-    E --> F["Validate and run independent checks"]
-    F -->|Pass| G["Binary and execution receipt"]
-    F -->|Fail| H["Diagnose the implicated decision"]
-    H -. "Bounded repair and recheck" .-> C
+    P["Plain-English request"] --> E["Transformer encodes the request"]
+    E --> C["Infer behavioral contract<br/>Inputs, outputs, rules and assumptions"]
+    C -->|Material ambiguity| Q["Ask a focused question"]
+    Q --> C
+    C -->|Contract sufficiently defined| N["NCM sketches the program<br/>Subsystems, interfaces and behaviors"]
+    N --> G["Refine and check the typed program graph"]
+    G --> I["Instruction head predicts<br/>opcodes and operands"]
+    I --> B["Deterministic encoder packages fresh Wasm"]
+    B --> V["Validate module and execute independent checks"]
+    V -->|Pass| R["Runnable binary and hash-bound receipt"]
+    V -->|Fail| D["Localize failure and apply a bounded repair"]
+    D -. "Affected contract or graph" .-> C
+    D -. "Affected instruction sequence" .-> I
+    D -->|Budget exhausted| X["Failure receipt"]
 ```
 
 This diagram shows the proposed end-to-end system. The pilot has exercised encoding, verification, and diagnostic controls with a hand-authored graph and instruction fixture.
 
 A model would first make the requested behavior explicit, then decompose the program into typed operations and interfaces. A later instruction head would predict the opcodes and operands for those checked operations. A deterministic encoder would package them into WebAssembly. The runner would check the module and compare its behavior with separately authored expectations.
+
+### 2. Parallel generation for a game wave
+
+```mermaid
+flowchart TD
+    A["Request a playable enemy wave"] --> O["Sketch the wave and its shared state"]
+    O --> F["Freeze interfaces and tick order"]
+    F --> S["Refine spawn rules"]
+    F --> P["Refine projectile updates"]
+    F --> C["Refine collision detection"]
+    F --> D["Refine scoring rules"]
+    S --> SI["Generate spawn instructions"]
+    P --> PI["Generate projectile instructions"]
+    C --> CI["Generate collision instructions"]
+    D --> DI["Generate scoring instructions"]
+    SI --> J["Join and check fresh components"]
+    PI --> J
+    CI --> J
+    DI --> J
+    J --> T["Run a seeded replay<br/>Check timings, hits and final score"]
+    T --> R["Runnable wave and receipt"]
+```
+
+This future example shows how separate components would meet at checked interfaces before a seeded integration replay.
+
+### 3. Debugging through contracts, graphs and instructions
+
+```mermaid
+flowchart TD
+    A["A failed check or behavior mismatch"] --> B["Reproduce the exact artifact and case"]
+    B --> C{"Where does behavior first diverge?"}
+    C -->|Contract differs from intent| D["Revise the affected contract"]
+    C -->|Graph differs from contract| E["Patch the affected graph node"]
+    C -->|Binary differs from graph| F["Regenerate implicated instructions"]
+    C -->|Components fail at their join| G["Repair interface or update order"]
+    D --> H["Regenerate affected parts within budget"]
+    E --> H
+    F --> H
+    G --> H
+    H --> I["Rerun failing case and final independent checks"]
+    I -->|Pass| J["New binary and receipt"]
+    I -->|Budget exhausted| K["Failure receipt with evidence"]
+```
+
+Failures would be localized before regenerating affected parts. Every proposed repair still has to pass independent checks within its budget.
+
+### 4. Pilot, learning and evaluation sequence
+
+```mermaid
+flowchart TD
+    A["Hand-authored graph and instruction control"] --> B["Qualify encoding, oracle, diagnostics and receipts"]
+    B --> C["Prepare licensed paired examples and held-out families"]
+    C --> D["Evaluate English to contract and concept graph"]
+    C --> E["Evaluate graph to opcodes and operands"]
+    D --> F["Combine stages on unseen program families"]
+    E --> F
+    F --> G["Compare repair, machine-state feedback and execution profiles"]
+    G --> H["Expand to scoped component and application tasks"]
+```
+
+The hand-authored control has reproduced locally. The learned stages and broader applications are research objectives.
+
+### 5. Execution profiles
+
+```mermaid
+flowchart TD
+    A["Checked outline and frozen interfaces"] --> B["Schedule branches with ready dependencies"]
+    B -->|Small or tightly coupled task| C["Refine serially"]
+    B -->|Independent branches on one device| D["Batch branches with one resident model"]
+    B -->|Enough independent work| E["Distribute branches across workers"]
+    C --> F["Join and verify components"]
+    D --> F
+    E --> F
+    F --> G["Run integration checks and return the artifact"]
+```
+
+The project would compare these scheduling choices at matched correctness and resource budgets.
 
 ## Why structure the program this way?
 
@@ -51,6 +136,12 @@ You can try that prebuilt module offline in a browser by downloading this reposi
 I'm considering taking L.O.R.E. further and would like a technical second opinion on the whole approach. Which architectural assumption would you challenge? Where would you simplify the design? What existing work should inform it, and what small experiment would convince you to continue or stop?
 
 Reply where I shared the project or [open an issue](https://github.com/Kian-hdr/lore-demo/issues/new). Concrete counterexamples and proposed tests are welcome.
+
+## Technical disclosure and access
+
+The architecture and diagrams are prepared for public discussion. Advanced model configurations, training recipes, weights and checkpoints, and core implementation details are confidential and reserved for internal research. Those technical details are redacted from this preview. The learning stages described above are research objectives.
+
+For deeper technical review or an access request, [contact Kian through a GitHub issue](https://github.com/Kian-hdr/lore-demo/issues/new), or reply in the channel where this project was shared. [Disclosure boundary](docs/Access.md)
 
 ## Ownership
 

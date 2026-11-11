@@ -112,3 +112,5 @@ flowchart TD
 The original harness also checked an invalid local instruction and an incompatible graph join. The browser demo runs the prebuilt accepted module with new input values. [Worked example](Worked_Example.md) · [Try it](Try_It.md) · [Evidence limits](Limits.md)
 
 [Project concept](Concept.md) · [Research plan](Research_Plan.md) · [Overview](../README.md)
+
+Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)

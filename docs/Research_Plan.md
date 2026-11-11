@@ -50,3 +50,5 @@ Reconsider the design if the oracle is unreliable, graphs add more overhead than
 - What result would persuade you to continue, simplify, or stop?
 
 [Architecture](Architecture.md) · [Concept](Concept.md) · [Current limits](Limits.md) · [Overview](../README.md)
+
+Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)

@@ -31,3 +31,5 @@ The research would expand from pure integer kernels to fresh executable componen
 The longer-term ambition includes building, editing, and debugging runnable software from ordinary requests. Expansion would follow demonstrated correctness on each supported workload and target.
 
 [Architecture](Architecture.md) · [Research plan](Research_Plan.md) · [Worked example](Worked_Example.md) · [Overview](../README.md)
+
+Advanced model, training and core implementation details are reserved for internal research. [Technical disclosure and contact](Access.md)
