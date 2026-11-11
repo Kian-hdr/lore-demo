@@ -21,12 +21,32 @@ The research program investigates verified task completion, end-to-end latency, 
 **Next-Concept Modeling (NCM)** is published research on generation through a learned hierarchy of discrete codes. L.O.R.E.'s proposed concept planner uses explicit typed program operations. The visual guide explains the relationship between these two hierarchies. [Concepts, codes and tokens](docs/Concept_Hierarchy.md)
 
 ```mermaid
-flowchart TD
-    A["Behavior contract"] --> B["Concept planner<br/>Sketch and refine operations"]
-    B --> C["Typed concept graph"]
-    C --> D["Instruction head<br/>Choose opcodes and operands"]
-    D --> E["Encoder and independent verifier"]
+%%{init: {"flowchart": {"nodeSpacing": 10, "rankSpacing": 30, "padding": 8}}}%%
+flowchart TB
+    subgraph COARSE["COARSE · broad structure"]
+        direction LR
+        A["A"] ~~~ B["B"]
+    end
+    subgraph MIDDLE["REFINEMENT · more detail"]
+        direction LR
+        C["C"] ~~~ D["D"] ~~~ E["E"] ~~~ F["F"]
+    end
+    subgraph FINE["FINE · dense detail"]
+        direction LR
+        G["G"] ~~~ H["H"] ~~~ I["I"] ~~~ J["J"] ~~~ K["K"] ~~~ L["L"] ~~~ M["M"] ~~~ N["N"]
+    end
+    COARSE -->|"Condition the next level"| MIDDLE
+    MIDDLE -->|"Add finer information"| FINE
+    FINE --> DECODER["Decoder reconstructs text tokens"]
+    classDef coarse fill:#35244f,stroke:#aa91d2,color:#ffffff,font-size:26px;
+    classDef middle fill:#194e48,stroke:#6ea59d,color:#ffffff,font-size:20px;
+    classDef fine fill:#62422d,stroke:#c39770,color:#ffffff,font-size:14px;
+    class A,B coarse;
+    class C,D,E,F middle;
+    class G,H,I,J,K,L,M,N fine;
 ```
+
+The pyramid illustrates the published coarse-to-fine representation with symbolic code labels. L.O.R.E.'s program-planning proposal uses typed operations at its corresponding interfaces. [Read the visual comparison](docs/Concept_Hierarchy.md)
 
 | Subsystem | Responsibility | Visual explanation |
 | --- | --- | --- |

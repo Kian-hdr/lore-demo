@@ -72,3 +72,5 @@ The top specifies the task. The middle makes operations and interfaces explicit.
 The tokenizer, learned codes and text-generation results in the NCM paper belong to its authors. L.O.R.E.'s current demo establishes a typed-program control and an execution path. [Subsystem guide](Subsystems.md) · [Research foundations](Research_Foundations.md)
 
 [Overview](../README.md) · [Architecture](Architecture.md) · [Research plan](Research_Plan.md)
+
+Visual reference for the layered teaching approach: [Cloud X Berry video](https://www.youtube.com/watch?v=SMYzc9FMXj0). The schematics on this page were authored for this explanation, with the mechanism checked against the linked primary research.
